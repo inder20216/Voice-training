@@ -1,0 +1,27 @@
+{
+  "name": "ai-softskills-mentor",
+  "version": "3.0.0",
+  "type": "module",
+  "description": "AI-powered real-time voice soft skills mentor with structured coaching and language control",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "ai",
+    "soft-skills",
+    "training",
+    "voice",
+    "real-time",
+    "mentor"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1",
+    "node-fetch": "^3.3.2"
+  }
+}
