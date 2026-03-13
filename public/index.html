@@ -2,300 +2,35 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Suhani — AI Voice Mentor</title>
 <style>
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #0f172a, #020617);
-  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(145deg, #eef2ff 0%, #f0f7ff 50%, #e8f4fd 100%);
+  color: #0f172a;
   min-height: 100vh;
   display: flex;
+  justify-content: center;
 }
 
-/* ══════════════════════════════
-   SIDE PANEL
-══════════════════════════════ */
-#sidePanel {
-  width: 270px;
-  min-width: 270px;
-  background: rgba(255,255,255,0.03);
-  border-right: 1px solid rgba(255,255,255,0.07);
-  padding: 24px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  overflow-y: auto;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-}
-
-.panel-title {
-  font-size: 10px;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  margin-bottom: 12px;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  font-size: 13px;
-  gap: 8px;
-}
-.info-row:last-child { border-bottom: none; }
-.info-label { color: rgba(255,255,255,0.38); white-space: nowrap; }
-.info-value {
-  color: rgba(255,255,255,0.88);
-  font-weight: 600;
-  text-align: right;
-  word-break: break-word;
-  max-width: 160px;
-}
-.detecting {
-  color: rgba(255,255,255,0.28);
-  font-style: italic;
-  font-weight: 400;
-  animation: detectPulse 1.5s ease-in-out infinite;
-}
-@keyframes detectPulse {
-  0%,100% { opacity: 0.28; }
-  50%      { opacity: 0.65; }
-}
-
-/* Multi-language chips */
-.lang-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: flex-end;
-  max-width: 160px;
-}
-.lang-chip {
-  background: rgba(99,102,241,0.14);
-  border: 1px solid rgba(99,102,241,0.3);
-  border-radius: 20px;
-  padding: 2px 9px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #a5b4fc;
-  white-space: nowrap;
-}
-
-/* ══════════════════════════════
-   SESSION FLOW STEPS
-══════════════════════════════ */
-.flow-step {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 9px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  position: relative;
-}
-.flow-step:last-child { border-bottom: none; }
-
-.step-circle {
-  flex-shrink: 0;
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 700;
-  background: rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.25);
-  border: 1.5px solid rgba(255,255,255,0.1);
-  transition: all 0.4s ease;
-}
-.step-text { flex: 1; }
-.step-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.3);
-  transition: color 0.4s ease;
-  line-height: 1.3;
-}
-.step-desc {
-  font-size: 10px;
-  color: rgba(255,255,255,0.18);
-  margin-top: 2px;
-  line-height: 1.4;
-  transition: color 0.4s ease;
-}
-
-/* Active step */
-.flow-step.active .step-circle {
-  background: rgba(99,102,241,0.25);
-  color: #a5b4fc;
-  border-color: rgba(99,102,241,0.6);
-  animation: stepPulse 1.6s ease-in-out infinite;
-}
-.flow-step.active .step-label { color: #a5b4fc; }
-.flow-step.active .step-desc  { color: rgba(165,180,252,0.55); }
-
-/* Complete step */
-.flow-step.done .step-circle {
-  background: rgba(34,197,94,0.2);
-  color: #4ade80;
-  border-color: rgba(34,197,94,0.45);
-  animation: none;
-}
-.flow-step.done .step-label { color: rgba(255,255,255,0.7); }
-.flow-step.done .step-desc  { color: rgba(255,255,255,0.3); }
-
-@keyframes stepPulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.4); }
-  50%      { box-shadow: 0 0 0 6px rgba(99,102,241,0); }
-}
-
-/* Monthly Challenge */
-.challenge-box {
-  background: linear-gradient(135deg, rgba(234,179,8,0.09), rgba(249,115,22,0.07));
-  border: 1px solid rgba(234,179,8,0.18);
-  border-radius: 10px;
-  padding: 14px;
-}
-.challenge-title {
-  font-size: 11px;
-  font-weight: 700;
-  color: #fbbf24;
-  margin-bottom: 5px;
-}
-.challenge-desc {
-  font-size: 11px;
-  color: rgba(255,255,255,0.5);
-  line-height: 1.5;
-  margin-bottom: 11px;
-}
-.progress-bar {
-  background: rgba(255,255,255,0.08);
-  border-radius: 100px;
-  height: 7px;
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-.progress-fill {
-  height: 100%;
-  border-radius: 100px;
-  background: linear-gradient(90deg, #f59e0b, #f97316);
-  transition: width 0.6s ease;
-  width: 0%;
-}
-.progress-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: rgba(255,255,255,0.4);
-}
-.progress-label strong { color: #fbbf24; font-size: 13px; }
-.challenge-msg {
-  margin-top: 9px;
-  font-size: 11px;
-  font-weight: 600;
-  text-align: center;
-  min-height: 15px;
-  color: #4ade80;
-}
-
-/* ══════════════════════════════
-   WELCOME / INTRO PANEL
-══════════════════════════════ */
-#welcomePanel {
-  width: 100%;
-  max-width: 620px;
-  margin-bottom: 32px;
-  animation: fadeUp 0.5s ease;
-}
-
-.welcome-intro {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 14px;
-  padding: 22px 24px;
-  margin-bottom: 14px;
-  text-align: center;
-}
-.welcome-intro p {
-  font-size: 14px;
-  color: rgba(255,255,255,0.65);
-  line-height: 1.75;
-  margin: 0;
-}
-.welcome-intro p strong {
-  color: rgba(255,255,255,0.92);
-  font-weight: 600;
-}
-
-.topics-label {
-  font-size: 10px;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.topics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-  gap: 8px;
-  margin-bottom: 14px;
-}
-.topic-chip {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 9px;
-  padding: 10px 13px;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-.topic-chip .t-icon {
-  font-size: 17px;
-  line-height: 1;
-}
-.topic-chip .t-text {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.72);
-  line-height: 1.35;
-}
-.topic-chip .t-sub {
-  font-size: 10px;
-  color: rgba(255,255,255,0.32);
-  margin-top: 1px;
-}
-
-.welcome-note {
-  background: rgba(99,102,241,0.07);
-  border: 1px solid rgba(99,102,241,0.2);
-  border-radius: 10px;
-  padding: 12px 16px;
-  font-size: 12px;
-  color: rgba(165,180,252,0.75);
-  line-height: 1.6;
-  text-align: center;
-}
 
 /* ══════════════════════════════
    MAIN AREA
 ══════════════════════════════ */
 #mainArea {
-  flex: 1;
+  width: 100%;
+  max-width: 680px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 30px;
+  padding: 32px 24px 52px;
   overflow-y: auto;
 }
 
-/* Top section (orb + buttons) */
 #topSection {
   display: flex;
   flex-direction: column;
@@ -304,51 +39,148 @@ body {
   width: 100%;
 }
 
-h1 { font-size: 26px; margin-bottom: 5px; }
-.subtitle { color: rgba(255,255,255,0.4); font-size: 14px; margin-bottom: 36px; }
+/* Logo */
+#logoHeader { width:100%; display:flex; justify-content:center; padding-bottom:16px; }
+#logoHeader img { height: 36px; width: auto; }
 
-.orb {
-  width: 120px; height: 120px;
+.main-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #0f172a;
+  margin-bottom: 3px;
+}
+.main-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 20px;
+  letter-spacing: 0.3px;
+}
+
+/* Welcome panel */
+#welcomePanel {
+  width: 100%;
+  max-width: 540px;
+  margin-bottom: 22px;
+  animation: fadeUp 0.4s ease;
+}
+.welcome-desc {
+  text-align: center;
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.75;
+  margin-bottom: 14px;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid rgba(59,130,246,0.1);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.scenario-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.scenario-tag {
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(59,130,246,0.18);
+  color: #3b82f6;
+  background: rgba(59,130,246,0.06);
+  font-weight: 500;
+}
+.welcome-email-note {
+  text-align: center;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* ── Jarvis dark orb container ── */
+#jarvisWrap {
+  background: radial-gradient(circle at center, #0c1a2e 0%, #03080f 100%);
   border-radius: 50%;
-  background: linear-gradient(45deg, #3b82f6, #9333ea);
-  margin: 0 auto 30px;
-  transition: all 0.5s ease;
+  box-shadow: 0 8px 36px rgba(59,130,246,0.18), 0 0 0 1px rgba(59,130,246,0.12);
+  margin-bottom: 22px;
+  display: none;
+  line-height: 0;
 }
-.orb.small { width: 70px; height: 70px; margin-bottom: 20px; }
-.pulsing { animation: pulse 2s infinite; }
-@keyframes pulse {
-  0%   { transform: scale(1);    box-shadow: 0 0 0 0   rgba(99,102,241,0.45); }
-  50%  { transform: scale(1.08); box-shadow: 0 0 0 20px rgba(99,102,241,0);   }
-  100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(99,102,241,0);   }
-}
+#jarvis { display: block; border-radius: 50%; }
 
-.btn-row { display: flex; gap: 12px; justify-content: center; margin-bottom: 14px; }
+/* Buttons */
+.btn-row { display:flex; gap:10px; justify-content:center; margin-bottom:12px; }
 button {
-  padding: 11px 24px;
-  border-radius: 8px; border: none;
-  font-size: 15px; cursor: pointer;
-  font-family: Arial, sans-serif;
-  transition: transform 0.15s, opacity 0.2s;
+  padding: 10px 26px;
+  border-radius: 9px; border: none;
+  font-size: 14px; cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
 }
 button:hover:not(:disabled) { transform: translateY(-1px); }
-button:disabled { opacity: 0.4; cursor: not-allowed; }
-#startBtn { background: #22c55e; color: white; }
-#endBtn   { background: #ef4444; color: white; display: none; }
+button:disabled { opacity: 0.35; cursor: not-allowed; }
+#startBtn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(34,197,94,0.28);
+}
+#endBtn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  display: none;
+  box-shadow: 0 3px 12px rgba(239,68,68,0.25);
+}
 
-#status { font-size: 14px; color: rgba(255,255,255,0.5); min-height: 20px; }
+/* Status */
+#status {
+  font-size: 13px;
+  color: #64748b;
+  min-height: 20px;
+  text-align: center;
+  font-weight: 500;
+}
 .live-dot {
   display: inline-block;
-  width: 8px; height: 8px; border-radius: 50%;
+  width: 7px; height: 7px; border-radius: 50%;
   background: #22c55e; margin-right: 6px;
   animation: blink 1.2s ease-in-out infinite;
 }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
 
-.hint {
+/* HUD bar */
+#hudBar {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 12px;
+  padding: 8px 22px;
+  background: #fff;
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  font-family: 'Courier New', monospace;
+}
+.hud-item { display:flex; align-items:center; gap:7px; }
+.hud-label { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; font-family:inherit; }
+.hud-val   { font-size:16px; font-weight:700; letter-spacing:1.5px; color:#1d4ed8; }
+
+/* Email banner */
+#emailBanner {
+  display: none;
+  align-items: center;
+  gap: 8px;
   margin-top: 10px;
+  padding: 9px 18px;
+  background: rgba(34,197,94,0.07);
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: 9px;
   font-size: 12px;
-  color: rgba(255,255,255,0.22);
-  max-width: 340px;
+  font-weight: 600;
+  color: #16a34a;
 }
 
 /* ══════════════════════════════
@@ -357,135 +189,112 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 #feedbackPanel {
   display: none;
   width: 100%;
-  max-width: 680px;
-  margin-top: 32px;
-  animation: fadeUp 0.5s ease;
+  max-width: 640px;
+  margin-top: 28px;
+  animation: fadeUp 0.4s ease;
 }
+
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 
 .feedback-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
-  gap: 10px;
-}
-.feedback-header h2 {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-.feedback-header .qc-note {
-  font-size: 11px;
-  color: rgba(255,255,255,0.35);
-  background: rgba(255,255,255,0.05);
-  border-radius: 6px;
-  padding: 5px 10px;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-/* Rating cards grid */
-.eval-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.eval-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 10px;
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
   gap: 8px;
 }
-.eval-card-label {
+.feedback-header h2 { font-size: 14px; font-weight: 700; color: #0f172a; letter-spacing: 0.3px; }
+.qc-note {
   font-size: 11px;
-  color: rgba(255,255,255,0.45);
+  color: #94a3b8;
+  background: #f8fafc;
+  border-radius: 6px;
+  padding: 4px 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.eval-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 8px;
+  margin-bottom: 9px;
+}
+.eval-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.eval-card-label {
+  font-size: 10px;
+  color: #94a3b8;
   text-transform: uppercase;
   letter-spacing: 0.8px;
+  font-weight: 600;
 }
 .rating-badge {
   display: inline-block;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 20px;
   width: fit-content;
 }
-.rating-badge.excellent { background: rgba(34,197,94,0.18);  color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-.rating-badge.good      { background: rgba(59,130,246,0.18); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
-.rating-badge.needswork { background: rgba(249,115,22,0.18); color: #fb923c; border: 1px solid rgba(249,115,22,0.3); }
-.rating-badge.poor      { background: rgba(239,68,68,0.18);  color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-.rating-badge.pending   { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.08); }
+.rating-badge.excellent { background:#dcfce7; color:#16a34a; border:1px solid #bbf7d0; }
+.rating-badge.good      { background:#dbeafe; color:#1d4ed8; border:1px solid #bfdbfe; }
+.rating-badge.needswork { background:#ffedd5; color:#c2410c; border:1px solid #fed7aa; }
+.rating-badge.poor      { background:#fee2e2; color:#dc2626; border:1px solid #fecaca; }
+.rating-badge.pending   { background:#f1f5f9; color:#94a3b8;  border:1px solid #e2e8f0; }
 
-/* Summary row */
 .feedback-summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: 8px;
+  margin-bottom: 9px;
 }
 .summary-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: #fff;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
-  padding: 13px 15px;
+  padding: 13px 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
-.summary-card .s-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: rgba(255,255,255,0.35);
-  margin-bottom: 6px;
-}
-.summary-card .s-value {
-  font-size: 13px;
-  color: rgba(255,255,255,0.85);
-  line-height: 1.5;
-}
+.summary-card .s-label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:#94a3b8; margin-bottom:6px; font-weight:600; }
+.summary-card .s-value { font-size:13px; color:#1e293b; line-height:1.55; }
 #strengthCard { border-left: 3px solid #22c55e; }
 #priorityCard { border-left: 3px solid #f97316; }
 
-/* Overall score bar */
 .overall-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: #fff;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
   padding: 14px 18px;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
-.overall-score {
-  font-size: 22px;
-  font-weight: 700;
-  color: white;
-}
-.overall-score span { font-size: 14px; color: rgba(255,255,255,0.4); font-weight: 400; }
-.overall-rating-badge {
-  font-size: 13px;
-  font-weight: 700;
-  padding: 6px 18px;
-  border-radius: 20px;
-}
-.overall-rating-badge.amazing  { background: rgba(34,197,94,0.2);  color: #4ade80; border: 1px solid rgba(34,197,94,0.4); }
-.overall-rating-badge.good     { background: rgba(59,130,246,0.2); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
-.overall-rating-badge.average  { background: rgba(249,115,22,0.2); color: #fb923c; border: 1px solid rgba(249,115,22,0.4); }
-.overall-rating-badge.needswork{ background: rgba(239,68,68,0.2);  color: #f87171; border: 1px solid rgba(239,68,68,0.4); }
+.overall-score { font-size: 20px; font-weight: 800; color: #0f172a; }
+.overall-score span { font-size: 13px; color: #94a3b8; font-weight: 400; }
+.overall-rating-badge { font-size: 12px; font-weight: 700; padding: 6px 18px; border-radius: 20px; }
+.overall-rating-badge.amazing  { background:#dcfce7; color:#16a34a; border:1px solid #bbf7d0; }
+.overall-rating-badge.good     { background:#dbeafe; color:#1d4ed8; border:1px solid #bfdbfe; }
+.overall-rating-badge.average  { background:#ffedd5; color:#c2410c; border:1px solid #fed7aa; }
+.overall-rating-badge.needswork{ background:#fee2e2; color:#dc2626; border:1px solid #fecaca; }
+.overall-rating-badge.pending  { background:#f1f5f9; color:#94a3b8; border:1px solid #e2e8f0; }
 
-/* Responsive */
-@media (max-width: 640px) {
-  body { flex-direction: column; }
-  #sidePanel { width: 100%; min-width: unset; height: auto; position: static; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+@media (max-width: 600px) {
+  #jarvis    { width: 240px !important; height: 240px !important; }
   .feedback-summary { grid-template-columns: 1fr; }
 }
 
@@ -493,161 +302,38 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 </head>
 <body>
 
-<!-- ══════════════════════════
-     SIDE PANEL
-══════════════════════════ -->
-<div id="sidePanel">
-
-  <div>
-    <div class="panel-title">Session Info</div>
-    <div class="info-row">
-      <span class="info-label">Name</span>
-      <span class="info-value detecting" id="displayName">Waiting…</span>
-    </div>
-    <div class="info-row">
-      <span class="info-label">Language</span>
-      <div class="lang-chips" id="displayLang"><span class="detecting" style="font-size:12px;font-weight:400">Waiting…</span></div>
-    </div>
-    <div class="info-row">
-      <span class="info-label">Scenario</span>
-      <span class="info-value detecting" id="displayScenario">Waiting…</span>
-    </div>
-    <div class="info-row">
-      <span class="info-label">Duration</span>
-      <span class="info-value" id="sessionDuration" style="color:rgba(255,255,255,0.35)">—</span>
-    </div>
-  </div>
-
-  <!-- SESSION FLOW -->
-  <div>
-    <div class="panel-title">Session Flow</div>
-
-    <div class="flow-step" id="step-intro">
-      <div class="step-circle">1</div>
-      <div class="step-text">
-        <div class="step-label">Introduction</div>
-        <div class="step-desc">Suhani says hi &amp; asks your name</div>
-      </div>
-    </div>
-
-    <div class="flow-step" id="step-name">
-      <div class="step-circle">2</div>
-      <div class="step-text">
-        <div class="step-label">Name Confirmed</div>
-        <div class="step-desc">Spelling confirmed — you say YES</div>
-      </div>
-    </div>
-
-    <div class="flow-step" id="step-lang">
-      <div class="step-circle">3</div>
-      <div class="step-text">
-        <div class="step-label">Language Set</div>
-        <div class="step-desc">Detected from your first response</div>
-      </div>
-    </div>
-
-    <div class="flow-step" id="step-scenario">
-      <div class="step-circle">4</div>
-      <div class="step-text">
-        <div class="step-label">Scenario Selected</div>
-        <div class="step-desc">Mock call type agreed upon</div>
-      </div>
-    </div>
-
-    <div class="flow-step" id="step-call">
-      <div class="step-circle">5</div>
-      <div class="step-text">
-        <div class="step-label">Mock Call Active</div>
-        <div class="step-desc">Suhani in character — no coaching</div>
-      </div>
-    </div>
-
-    <div class="flow-step" id="step-feedback">
-      <div class="step-circle">6</div>
-      <div class="step-text">
-        <div class="step-label">Feedback &amp; Eval</div>
-        <div class="step-desc">Honest report shared with QC team</div>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <div class="panel-title">Monthly Challenge 🏆</div>
-    <div class="challenge-box">
-      <div class="challenge-title">Complete 50 Amazing Calls</div>
-      <div class="challenge-desc">Finish 50 amazing-rated calls this month and win goodies from the company!</div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div class="progress-label">
-        <span><strong id="callCount">0</strong> / 50 this month</span>
-        <span id="remainingCalls">50 to go</span>
-      </div>
-      <div class="challenge-msg" id="challengeMsg"></div>
-    </div>
-  </div>
-
-</div>
-
 
 <!-- ══════════════════════════
      MAIN AREA
 ══════════════════════════ -->
 <div id="mainArea">
-
   <div id="topSection">
-    <h1>Suhani — AI Voice Mentor</h1>
-    <div class="subtitle">Corporate Soft Skills Training Platform</div>
 
-    <!-- ── WELCOME INSTRUCTIONS (hidden once session starts) ── -->
-    <div id="welcomePanel">
-
-      <div class="welcome-intro">
-        <p>
-          <strong>Welcome to your AI Training Mentor.</strong><br>
-          Suhani will conduct a <strong>live mock call</strong> with you on any scenario you choose — or suggest your own real-life situation.<br>
-          After the call, you'll receive <strong>honest, detailed feedback</strong> on your communication skills.
-        </p>
-      </div>
-
-      <div class="topics-label">Available Mock Call Scenarios</div>
-
-      <div class="topics-grid">
-        <div class="topic-chip">
-          <div class="t-icon">😠</div>
-          <div><div class="t-text">Angry Customer</div><div class="t-sub">Handle upset callers</div></div>
-        </div>
-        <div class="topic-chip">
-          <div class="t-icon">🏥</div>
-          <div><div class="t-text">Healthcare / Medical</div><div class="t-sub">Patient &amp; appointment calls</div></div>
-        </div>
-        <div class="topic-chip">
-          <div class="t-icon">📈</div>
-          <div><div class="t-text">Sales Call</div><div class="t-sub">Pitch &amp; objection handling</div></div>
-        </div>
-        <div class="topic-chip">
-          <div class="t-icon">🎙️</div>
-          <div><div class="t-text">Telephone Interview</div><div class="t-sub">Practice job interviews</div></div>
-        </div>
-        <div class="topic-chip">
-          <div class="t-icon">💬</div>
-          <div><div class="t-text">General Soft Skills</div><div class="t-sub">Situational questions</div></div>
-        </div>
-        <div class="topic-chip">
-          <div class="t-icon">✏️</div>
-          <div><div class="t-text">Your Own Scenario</div><div class="t-sub">Describe any real situation</div></div>
-        </div>
-      </div>
-
-      <div class="welcome-note">
-        No forms to fill. Suhani will ask your name, detect your language, and guide you into the call.<br>
-        Feedback is captured and shared with the QC team after every session.<br><br>
-        <strong style="color:#fbbf24">Challenge:</strong> Complete <strong style="color:#fbbf24">50 amazing-rated calls</strong> this month and receive goodies from the company!
-      </div>
-
+    <div id="logoHeader">
+      <img src="https://raw.githubusercontent.com/inder20216/openmind-assets/main/logo.png" alt="OpenMind">
     </div>
 
-    <div class="orb" id="orb"></div>
+    <div class="main-title">SUHANI</div>
+    <div class="main-sub">AI Voice Mentor &nbsp;·&nbsp; Corporate Soft Skills Training</div>
+
+    <div id="welcomePanel">
+      <p class="welcome-desc">
+        Suhani will conduct a live mock call and deliver honest, detailed feedback on your communication skills.
+      </p>
+      <div class="scenario-row">
+        <span class="scenario-tag">😠 Angry Customer</span>
+        <span class="scenario-tag">🏥 Healthcare</span>
+        <span class="scenario-tag">📈 Sales Call</span>
+        <span class="scenario-tag">🎙️ Interview</span>
+        <span class="scenario-tag">💬 Soft Skills</span>
+        <span class="scenario-tag">✏️ Custom</span>
+      </div>
+    </div>
+
+    <!-- Jarvis in dark orb container -->
+    <div id="jarvisWrap">
+      <canvas id="jarvis" width="280" height="280"></canvas>
+    </div>
 
     <div class="btn-row">
       <button id="startBtn">Start Session</button>
@@ -655,41 +341,44 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
     </div>
 
     <div id="status">Click <strong>Start Session</strong> — Suhani will take it from here</div>
-  </div>
 
-
-  <!-- ── FEEDBACK PANEL (appears after call) ── -->
-  <div id="feedbackPanel">
-
-    <div class="feedback-header">
-      <h2>📋 Call Evaluation Report</h2>
-      <div class="qc-note">Shared with QC team for training planning</div>
+    <div id="hudBar">
+      <div class="hud-item">
+        <span class="hud-label">Call</span>
+        <span class="hud-val" id="callTimerDisplay">00:00</span>
+      </div>
     </div>
 
-    <!-- Dynamic evaluation cards — built from AI output -->
-    <div class="eval-grid" id="evalGrid"></div>
+    <div id="emailBanner">
+      ✓ Feedback emailed to you and your manager
+    </div>
 
-    <!-- Strength + Priority -->
+  </div>
+
+  <!-- Feedback Panel -->
+  <div id="feedbackPanel">
+    <div class="feedback-header">
+      <h2>📋 Call Evaluation Report</h2>
+      <div class="qc-note">Shared with QC team</div>
+    </div>
+    <div class="eval-grid" id="evalGrid"></div>
     <div class="feedback-summary">
       <div class="summary-card" id="strengthCard">
-        <div class="s-label">✅ Your Strength</div>
+        <div class="s-label">✅ Strength</div>
         <div class="s-value" id="strengthText">Listening from Suhani…</div>
       </div>
       <div class="summary-card" id="priorityCard">
-        <div class="s-label">🎯 Top Priority to Improve</div>
+        <div class="s-label">🎯 Top Priority</div>
         <div class="s-value" id="priorityText">Listening from Suhani…</div>
       </div>
     </div>
-
-    <!-- Overall score -->
     <div class="overall-row">
       <div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;">Overall Score</div>
+        <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;font-weight:600;">Overall Score</div>
         <div class="overall-score" id="overallScore">— <span>/ 7 Excellent</span></div>
       </div>
       <div class="overall-rating-badge pending" id="overallRating">Awaiting…</div>
     </div>
-
   </div>
 
 </div>
@@ -697,424 +386,296 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 
 <script>
 
+let userEmail = "", managerEmail = "";
+
+// ══════════════════════════════════════
+// JARVIS VISUALIZER
+// ══════════════════════════════════════
+
+const canvas = document.getElementById("jarvis");
+const ctx2d  = canvas.getContext("2d");
+const CW = canvas.width, CH = canvas.height, CX = CW/2, CY = CH/2;
+
+let vizState = "idle";
+let audioCtx = null, micAnalyser = null, aiAnalyser = null;
+let outerAngle = 0, midAngle = 0, scanAngle = -Math.PI/2, innerPulse = 0, simTime = 0;
+
+const FREQ_BINS = 128;
+const freqBuf   = new Uint8Array(FREQ_BINS);
+const simBuf    = new Float32Array(FREQ_BINS);
+
+function vizColor(a) {
+  if (vizState === "user_speaking") return `rgba(0,255,140,${a})`;
+  if (vizState === "ai_speaking")   return `rgba(0,210,255,${a})`;
+  return `rgba(80,160,255,${a})`;
+}
+
+function fillSimBuf() {
+  for (let i=0;i<FREQ_BINS;i++)
+    simBuf[i]=Math.sin(simTime*4.1+i*0.25)*55+Math.sin(simTime*7.3+i*0.55)*30+Math.sin(simTime*2+i*0.08)*25+110;
+}
+
+function getFreq() {
+  if      (vizState==="user_speaking"&&micAnalyser) micAnalyser.getByteFrequencyData(freqBuf);
+  else if (vizState==="ai_speaking") {
+    if (aiAnalyser) aiAnalyser.getByteFrequencyData(freqBuf);
+    else { fillSimBuf(); for(let i=0;i<FREQ_BINS;i++) freqBuf[i]=Math.min(255,Math.max(0,simBuf[i])); }
+  } else freqBuf.fill(0);
+}
+
+function drawJarvis() {
+  requestAnimationFrame(drawJarvis);
+
+  // Fill dark background
+  ctx2d.fillStyle = "rgba(3,8,15,1)";
+  ctx2d.fillRect(0,0,CW,CH);
+
+  const active = vizState !== "idle";
+  const spd    = active ? 2.8 : 1;
+  outerAngle += 0.0025*spd; midAngle -= 0.004*spd;
+  scanAngle  += 0.022*spd;  innerPulse += 0.05;
+  if (active) simTime += 0.016;
+  getFreq();
+
+  ctx2d.save(); ctx2d.translate(CX,CY); ctx2d.globalAlpha=0.06; ctx2d.strokeStyle=vizColor(1); ctx2d.lineWidth=0.6;
+  for(let i=0;i<12;i++){const a=(i/12)*Math.PI*2;ctx2d.beginPath();ctx2d.moveTo(0,0);ctx2d.lineTo(Math.cos(a)*135,Math.sin(a)*135);ctx2d.stroke();}
+  ctx2d.restore();
+
+  ctx2d.save(); ctx2d.translate(CX,CY); ctx2d.rotate(outerAngle); ctx2d.globalAlpha=active?0.65:0.2; ctx2d.strokeStyle=vizColor(1); ctx2d.lineWidth=1.5;
+  for(let i=0;i<36;i++){const a0=(i/36)*Math.PI*2,a1=a0+(Math.PI*2/36)*0.62;ctx2d.beginPath();ctx2d.arc(0,0,128,a0,a1);ctx2d.stroke();}
+  ctx2d.restore();
+
+  ctx2d.save(); ctx2d.translate(CX,CY); ctx2d.rotate(midAngle); ctx2d.globalAlpha=active?0.7:0.25; ctx2d.strokeStyle=vizColor(1); ctx2d.lineWidth=2;
+  for(let i=0;i<24;i++){const a0=(i/24)*Math.PI*2,a1=a0+(Math.PI*2/24)*0.5;ctx2d.beginPath();ctx2d.arc(0,0,98,a0,a1);ctx2d.stroke();}
+  ctx2d.restore();
+
+  ctx2d.save(); ctx2d.translate(CX,CY); ctx2d.globalAlpha=active?0.88:0.17;
+  for(let i=0;i<FREQ_BINS;i++){
+    const a=(i/FREQ_BINS)*Math.PI*2-Math.PI/2, h=active?(freqBuf[i]/255)*38+2:2.5;
+    const x1=Math.cos(a)*56,y1=Math.sin(a)*56,x2=Math.cos(a)*(56+h),y2=Math.sin(a)*(56+h);
+    ctx2d.strokeStyle=vizColor(1); ctx2d.lineWidth=1.8; ctx2d.beginPath(); ctx2d.moveTo(x1,y1); ctx2d.lineTo(x2,y2); ctx2d.stroke();
+  }
+  ctx2d.restore();
+
+  ctx2d.save(); ctx2d.translate(CX,CY); ctx2d.globalAlpha=active?0.8:0.28; ctx2d.strokeStyle=vizColor(1); ctx2d.lineWidth=1.5; ctx2d.beginPath(); ctx2d.arc(0,0,50,0,Math.PI*2); ctx2d.stroke(); ctx2d.restore();
+
+  ctx2d.save(); ctx2d.translate(CX,CY); ctx2d.globalAlpha=active?0.75:0.15; ctx2d.strokeStyle=vizColor(1); ctx2d.lineWidth=3; ctx2d.shadowColor=vizColor(1); ctx2d.shadowBlur=16;
+  ctx2d.beginPath(); ctx2d.arc(0,0,98,scanAngle,scanAngle+0.45); ctx2d.stroke();
+  ctx2d.globalAlpha=active?0.2:0.05; ctx2d.lineWidth=1.5; ctx2d.shadowBlur=0; ctx2d.beginPath(); ctx2d.arc(0,0,98,scanAngle-0.6,scanAngle); ctx2d.stroke();
+  ctx2d.restore();
+
+  const pulse=1+Math.sin(innerPulse)*(active?0.18:0.06), cr=30*pulse;
+  ctx2d.save(); ctx2d.translate(CX,CY);
+  const g=ctx2d.createRadialGradient(0,0,0,0,0,cr);
+  if (vizState==="user_speaking"){g.addColorStop(0,"rgba(0,255,140,0.9)");g.addColorStop(0.45,"rgba(0,200,100,0.3)");g.addColorStop(1,"rgba(0,200,100,0)");}
+  else if(vizState==="ai_speaking"){g.addColorStop(0,"rgba(0,210,255,0.9)");g.addColorStop(0.45,"rgba(0,140,200,0.3)");g.addColorStop(1,"rgba(0,140,200,0)");}
+  else{g.addColorStop(0,"rgba(80,160,255,0.5)");g.addColorStop(0.45,"rgba(40,100,200,0.15)");g.addColorStop(1,"rgba(40,100,200,0)");}
+  ctx2d.fillStyle=g; ctx2d.shadowColor=vizColor(1); ctx2d.shadowBlur=active?18:5;
+  ctx2d.beginPath(); ctx2d.arc(0,0,cr,0,Math.PI*2); ctx2d.fill(); ctx2d.restore();
+
+  ctx2d.save(); ctx2d.translate(CX,CY); ctx2d.textAlign="center"; ctx2d.textBaseline="middle";
+  ctx2d.font="bold 10px 'Courier New',monospace"; ctx2d.fillStyle=vizColor(active?0.95:0.4); ctx2d.fillText("SUHANI",0,-5);
+  ctx2d.font="8px 'Courier New',monospace"; ctx2d.fillStyle=vizColor(active?0.55:0.22);
+  ctx2d.fillText(vizState==="ai_speaking"?"● SPEAKING":vizState==="user_speaking"?"● LISTENING":"○ STANDBY",0,8);
+  ctx2d.restore();
+
+  const B=12,M=6; ctx2d.globalAlpha=active?0.38:0.13; ctx2d.strokeStyle=vizColor(1); ctx2d.lineWidth=1.5;
+  [[M,M,1,1],[CW-M,M,-1,1],[M,CH-M,1,-1],[CW-M,CH-M,-1,-1]].forEach(([x,y,dx,dy])=>{
+    ctx2d.beginPath(); ctx2d.moveTo(x+dx*B,y); ctx2d.lineTo(x,y); ctx2d.lineTo(x,y+dy*B); ctx2d.stroke();
+  });
+  ctx2d.globalAlpha=1;
+}
+requestAnimationFrame(drawJarvis);
+
+
 // ══════════════════════════════════════
 // CALL TRACKER
 // ══════════════════════════════════════
+function getMonthKey(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;}
+function getCallData(){return JSON.parse(localStorage.getItem("voiceMentor_calls")||"{}");}
+function saveCallData(d){localStorage.setItem("voiceMentor_calls",JSON.stringify(d));}
+function addAmazingCall(){const data=getCallData(),key=getMonthKey();data[key]=(data[key]||0)+1;saveCallData(data);}
 
-function getMonthKey() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
-}
-function getCallData()    { return JSON.parse(localStorage.getItem("voiceMentor_calls") || "{}"); }
-function saveCallData(d)  { localStorage.setItem("voiceMentor_calls", JSON.stringify(d)); }
-function getThisMonthCount() { return getCallData()[getMonthKey()] || 0; }
-
-function addAmazingCall() {
-  const data = getCallData();
-  const key  = getMonthKey();
-  data[key]  = (data[key] || 0) + 1;
-  saveCallData(data);
-  updateProgress();
-}
-
-function updateProgress() {
-  const count     = getThisMonthCount();
-  const remaining = Math.max(50 - count, 0);
-  document.getElementById("callCount").textContent      = count;
-  document.getElementById("remainingCalls").textContent = remaining > 0 ? `${remaining} to go` : "Target reached! 🎉";
-  document.getElementById("progressFill").style.width   = Math.min(count / 50 * 100, 100) + "%";
-  const msg = document.getElementById("challengeMsg");
-  if      (count >= 50) { msg.textContent = "🎁 You qualify for goodies! Contact your manager."; msg.style.color = "#fbbf24"; }
-  else if (count >= 40) { msg.textContent = `Almost there! Just ${remaining} more!`;             msg.style.color = "#4ade80"; }
-  else if (count >= 25) { msg.textContent = `Halfway! ${remaining} calls to go.`;                msg.style.color = "#4ade80"; }
-  else                  { msg.textContent = ""; }
-}
-updateProgress();
 
 
 // ══════════════════════════════════════
-// SESSION FLOW STEPS
+// FEEDBACK DATA (for email)
 // ══════════════════════════════════════
+let feedbackData={name:"",scenario:"",evals:[],strength:"",priority:"",score:"",rating:""};
+let emailSent=false;
 
-const FLOW_STEPS = ["intro","name","lang","scenario","call","feedback"];
-
-function setFlowStep(stepId, state) {
-  // state: "active" | "done" | "reset"
-  const el = document.getElementById("step-" + stepId);
-  if (!el) return;
-  el.classList.remove("active","done");
-  if (state === "active" || state === "done") el.classList.add(state);
+async function sendFeedbackEmail(){
+  if(emailSent||!userEmail)return;
+  if(!feedbackData.rating&&feedbackData.evals.length===0)return;
+  emailSent=true;
+  try{
+    const res=await fetch("/send-feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({userEmail,managerEmail,feedback:feedbackData})});
+    if(res.ok){const b=document.getElementById("emailBanner");if(b)b.style.display="flex";}
+  }catch(e){console.error("Email send failed:",e);}
 }
 
-function markStepDone(stepId) {
-  setFlowStep(stepId, "done");
-  // Activate the next step
-  const idx = FLOW_STEPS.indexOf(stepId);
-  if (idx >= 0 && idx < FLOW_STEPS.length - 1) {
-    setFlowStep(FLOW_STEPS[idx + 1], "active");
+function resetFeedbackData(){
+  feedbackData={name:"",scenario:"",evals:[],strength:"",priority:"",score:"",rating:""};
+  emailSent=false;
+  const b=document.getElementById("emailBanner");if(b)b.style.display="none";
+}
+
+
+// ══════════════════════════════════════
+// FLOW + PANEL STUBS
+// ══════════════════════════════════════
+const FLOW_STEPS=["intro","name","lang","scenario","call","feedback"];
+function setFlowStep(id,state){const el=document.getElementById("step-"+id);if(!el)return;el.classList.remove("active","done");if(state==="active"||state==="done")el.classList.add(state);}
+function markStepDone(id){setFlowStep(id,"done");const i=FLOW_STEPS.indexOf(id);if(i>=0&&i<FLOW_STEPS.length-1)setFlowStep(FLOW_STEPS[i+1],"active");}
+function resetFlowSteps(){FLOW_STEPS.forEach(s=>setFlowStep(s,"reset"));}
+
+const SCENARIO_MAP={soft_skills:"General Soft Skills",angry_customer:"Angry Customer",healthcare:"Healthcare / Medical",sales:"Sales Call",interview:"Telephone Interview",custom:"Custom Scenario"};
+function setPanelValue(id,value){const el=document.getElementById(id);if(!el)return;el.textContent=value;el.classList.remove("detecting");}
+const detectedLanguages=new Set();
+function addLanguageChip(lang){const n=lang.trim();if(!n||detectedLanguages.has(n.toLowerCase()))return;detectedLanguages.add(n.toLowerCase());markStepDone("lang");}
+function resetPanel(){detectedLanguages.clear();}
+
+
+// ══════════════════════════════════════
+// FEEDBACK PANEL
+// ══════════════════════════════════════
+function ratingClass(v){const m={excellent:"excellent",good:"good",needswork:"needswork","needs work":"needswork",poor:"poor",amazing:"amazing",average:"average"};return m[v.toLowerCase().replace(/\s+/g,"")]||"pending";}
+const evalCards={};
+
+function addOrUpdateEvalCard(label,rating){
+  const grid=document.getElementById("evalGrid"),key=label.toLowerCase();
+  if(evalCards[key]){evalCards[key].textContent=rating;evalCards[key].className="rating-badge "+ratingClass(rating);}
+  else{
+    const card=document.createElement("div");card.className="eval-card";
+    const lbl=document.createElement("div");lbl.className="eval-card-label";lbl.textContent=label;
+    const badge=document.createElement("div");badge.className="rating-badge "+ratingClass(rating);badge.textContent=rating;
+    card.appendChild(lbl);card.appendChild(badge);grid.appendChild(card);evalCards[key]=badge;showFeedbackPanel();
   }
+  const ex=feedbackData.evals.find(e=>e.area.toLowerCase()===key);
+  if(ex)ex.rating=rating;else feedbackData.evals.push({area:label,rating});
 }
 
-function resetFlowSteps() {
-  FLOW_STEPS.forEach(s => setFlowStep(s, "reset"));
+function resetFeedback(){
+  document.getElementById("evalGrid").innerHTML="";
+  Object.keys(evalCards).forEach(k=>delete evalCards[k]);
+  document.getElementById("strengthText").textContent="Listening from Suhani…";
+  document.getElementById("priorityText").textContent="Listening from Suhani…";
+  document.getElementById("overallScore").innerHTML='— <span></span>';
+  const ovr=document.getElementById("overallRating");ovr.textContent="Awaiting…";ovr.className="overall-rating-badge pending";
+  document.getElementById("feedbackPanel").style.display="none";
 }
 
-
-// ══════════════════════════════════════
-// SESSION STATE
-// ══════════════════════════════════════
-
-let pc = null, stream = null, audioEl = null;
-
-const startBtn = document.getElementById("startBtn");
-const endBtn   = document.getElementById("endBtn");
-const statusEl = document.getElementById("status");
-const orb      = document.getElementById("orb");
-
-
-// ══════════════════════════════════════
-// SIDE PANEL — auto fill from AI tags
-// ══════════════════════════════════════
-
-const SCENARIO_MAP = {
-  soft_skills: "General Soft Skills", angry_customer: "Angry Customer",
-  healthcare:  "Healthcare / Medical", sales: "Sales Call",
-  interview:   "Telephone Interview",  custom: "Custom Scenario"
-};
-
-function setPanelValue(id, value) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = value;
-  el.classList.remove("detecting");
+function showFeedbackPanel(){
+  const fp=document.getElementById("feedbackPanel");
+  if(fp.style.display==="block")return;
+  fp.style.display="block";
+  setTimeout(()=>fp.scrollIntoView({behavior:"smooth",block:"start"}),100);
 }
 
-// Track languages used during the session
-const detectedLanguages = new Set();
-
-function addLanguageChip(lang) {
-  const name = lang.trim();
-  if (!name || detectedLanguages.has(name.toLowerCase())) return;
-  detectedLanguages.add(name.toLowerCase());
-  const container = document.getElementById("displayLang");
-  // Remove the "Waiting…" placeholder on first language
-  if (container.querySelector(".detecting")) container.innerHTML = "";
-  const chip = document.createElement("span");
-  chip.className   = "lang-chip";
-  chip.textContent = name;
-  container.appendChild(chip);
-  markStepDone("lang");
-}
-
-function resetPanel() {
-  ["displayName","displayScenario"].forEach(id => {
-    const el = document.getElementById(id);
-    el.textContent = "Waiting…";
-    el.classList.add("detecting");
-  });
-  // Reset language chips
-  detectedLanguages.clear();
-  const langEl = document.getElementById("displayLang");
-  langEl.innerHTML = '<span class="detecting" style="font-size:12px;font-weight:400">Waiting…</span>';
-}
-
-
-// ══════════════════════════════════════
-// FEEDBACK PANEL — rating cards
-// ══════════════════════════════════════
-
-function ratingClass(v) {
-  const map = { excellent:"excellent", good:"good", needswork:"needswork",
-                "needs work":"needswork", poor:"poor", amazing:"amazing", average:"average" };
-  return map[v.toLowerCase().replace(/\s+/g,"")] || "pending";
-}
-
-// Track which area labels already have a card
-const evalCards = {};
-
-function addOrUpdateEvalCard(label, rating) {
-  const grid = document.getElementById("evalGrid");
-  const key  = label.toLowerCase();
-
-  if (evalCards[key]) {
-    // Update existing card
-    const badge = evalCards[key];
-    badge.textContent = rating;
-    badge.className   = "rating-badge " + ratingClass(rating);
-  } else {
-    // Create new card
-    const card  = document.createElement("div");
-    card.className = "eval-card";
-    const lbl   = document.createElement("div");
-    lbl.className   = "eval-card-label";
-    lbl.textContent = label;
-    const badge = document.createElement("div");
-    badge.className   = "rating-badge " + ratingClass(rating);
-    badge.textContent = rating;
-    card.appendChild(lbl);
-    card.appendChild(badge);
-    grid.appendChild(card);
-    evalCards[key] = badge;
-    showFeedbackPanel();
-  }
-}
-
-function resetFeedback() {
-  document.getElementById("evalGrid").innerHTML        = "";
-  Object.keys(evalCards).forEach(k => delete evalCards[k]);
-  document.getElementById("strengthText").textContent  = "Listening from Suhani…";
-  document.getElementById("priorityText").textContent  = "Listening from Suhani…";
-  document.getElementById("overallScore").innerHTML    = '— <span></span>';
-  const ovr = document.getElementById("overallRating");
-  ovr.textContent = "Awaiting…";
-  ovr.className   = "overall-rating-badge pending";
-  document.getElementById("feedbackPanel").style.display = "none";
-}
-
-function showFeedbackPanel() {
-  const fp = document.getElementById("feedbackPanel");
-  if (fp.style.display === "block") return;
-  fp.style.display = "block";
-  orb.classList.add("small");
-  setTimeout(() => fp.scrollIntoView({ behavior:"smooth", block:"start" }), 100);
-}
-
-
-// ══════════════════════════════════════
-// PARSE AI TAGS FROM TRANSCRIPT
-// ══════════════════════════════════════
-
-function parseAITags(text) {
-
-  // Session info tags
+function parseAITags(text){
   let m;
-
-  m = text.match(/\[NAME_CONFIRMED:\s*([^\]]+)\]/i);
-  if (m) {
-    setPanelValue("displayName", m[1].trim());
-    markStepDone("intro");   // Step 1 done, Step 2 activates → name confirmed
-    markStepDone("name");    // Step 2 done, Step 3 activates → language
-  }
-
-  // Language chips — accumulate all languages spoken during the session
-  const langTags = [...text.matchAll(/\[LANGUAGE_DETECTED:\s*(\w+)\]/gi)];
-  langTags.forEach(([, lang]) => addLanguageChip(lang));
-
-  m = text.match(/\[SCENARIO_CONFIRMED:\s*([^\]]+)\]/i);
-  if (m) {
-    const key = m[1].trim().toLowerCase();
-    setPanelValue("displayScenario", SCENARIO_MAP[key] || m[1].trim());
-    markStepDone("scenario"); // Step 4 done, Step 5 activates → mock call
-  }
-
-  // Dynamic evaluation tags — [EVAL: Label | Rating]
-  const evalTags = [...text.matchAll(/\[EVAL:\s*([^|\]]+)\|\s*([^\]]+)\]/gi)];
-  evalTags.forEach(([, label, value]) => {
-    const l  = label.trim();
-    const v  = value.trim();
-    const lk = l.toLowerCase();
-
-    if      (lk === "score")    { showFeedbackPanel(); document.getElementById("overallScore").innerHTML = `${v} <span></span>`; markStepDone("call"); }
-    else if (lk === "strength") { document.getElementById("strengthText").textContent = v; }
-    else if (lk === "priority") { document.getElementById("priorityText").textContent = v; markStepDone("feedback"); }
-    else if (lk === "rating")   { const el = document.getElementById("overallRating"); el.textContent = v; el.className = "overall-rating-badge " + ratingClass(v); }
-    else                        { addOrUpdateEvalCard(l, v); }
+  m=text.match(/\[NAME_CONFIRMED:\s*([^\]]+)\]/i);
+  if(m){feedbackData.name=m[1].trim();setPanelValue("displayName",m[1].trim());markStepDone("intro");markStepDone("name");}
+  const langTags=[...text.matchAll(/\[LANGUAGE_DETECTED:\s*(\w+)\]/gi)];
+  langTags.forEach(([,lang])=>addLanguageChip(lang));
+  m=text.match(/\[SCENARIO_CONFIRMED:\s*([^\]]+)\]/i);
+  if(m){feedbackData.scenario=SCENARIO_MAP[m[1].trim().toLowerCase()]||m[1].trim();setPanelValue("displayScenario",feedbackData.scenario);markStepDone("scenario");}
+  const evalTags=[...text.matchAll(/\[EVAL:\s*([^|\]]+)\|\s*([^\]]+)\]/gi)];
+  evalTags.forEach(([,label,value])=>{
+    const l=label.trim(),v=value.trim(),lk=l.toLowerCase();
+    if(lk==="score"){showFeedbackPanel();document.getElementById("overallScore").innerHTML=`${v} <span></span>`;feedbackData.score=v;markStepDone("call");}
+    else if(lk==="strength"){document.getElementById("strengthText").textContent=v;feedbackData.strength=v;}
+    else if(lk==="priority"){document.getElementById("priorityText").textContent=v;feedbackData.priority=v;markStepDone("feedback");}
+    else if(lk==="rating"){const el=document.getElementById("overallRating");el.textContent=v;el.className="overall-rating-badge "+ratingClass(v);feedbackData.rating=v;sendFeedbackEmail();}
+    else{addOrUpdateEvalCard(l,v);}
   });
-
-  // Amazing call — count toward monthly challenge
-  if (/\[CALL_RATING:\s*amazing\]/i.test(text)) addAmazingCall();
+  if(/\[CALL_RATING:\s*amazing\]/i.test(text))addAmazingCall();
 }
 
 
 // ══════════════════════════════════════
-// SESSION TIMER
+// SESSION TIMER + 3-MIN HARD CUTOFF
 // ══════════════════════════════════════
+let sessionTimerInterval=null, sessionStartTime=0, sessionDC=null;
 
-let sessionTimerInterval = null;
-let sessionStartTime     = 0;
-
-function startSessionTimer() {
-  sessionStartTime = Date.now();
-  const durEl = document.getElementById("sessionDuration");
-  durEl.style.color = "rgba(255,255,255,0.88)";
-  sessionTimerInterval = setInterval(() => {
-    const secs = Math.floor((Date.now() - sessionStartTime) / 1000);
-    const m = String(Math.floor(secs / 60)).padStart(2, "0");
-    const s = String(secs % 60).padStart(2, "0");
-    durEl.textContent = `${m}:${s}`;
-  }, 1000);
+function startSessionTimer(){
+  sessionStartTime=Date.now();
+  const hud=document.getElementById("hudBar"),disp=document.getElementById("callTimerDisplay");
+  if(hud)hud.style.display="flex";
+  sessionTimerInterval=setInterval(()=>{
+    const secs=Math.floor((Date.now()-sessionStartTime)/1000);
+    const m=String(Math.floor(secs/60)).padStart(2,"0"),s=String(secs%60).padStart(2,"0");
+    if(disp)disp.textContent=`${m}:${s}`;
+    if(secs>=180)endSession();
+  },1000);
 }
 
-function stopSessionTimer() {
-  if (sessionTimerInterval) { clearInterval(sessionTimerInterval); sessionTimerInterval = null; }
-}
-
-
-
-
-// ══════════════════════════════════════
-// SILENCE DETECTION
-// ══════════════════════════════════════
-
-let silenceInterval   = null;
-let lastUserSpeech    = 0;
-let silenceCheckCount = 0;
-
-const SILENCE_WINDOW_MS = 15000;  // 15s of silence triggers each check-in
-const SILENCE_POLL_MS   = 2000;   // poll every 2s
-const SILENCE_MAX_ASKS  = 3;      // ask 3 times before ending the call
-
-function startSilenceDetection(dc) {
-  lastUserSpeech    = Date.now();
-  silenceCheckCount = 0;
-  silenceInterval   = setInterval(() => {
-    if (!pc) { stopSilenceDetection(); return; }
-    const elapsed = Date.now() - lastUserSpeech;
-    if (elapsed < SILENCE_WINDOW_MS) return;
-
-    silenceCheckCount++;
-    lastUserSpeech = Date.now(); // reset 15s window for next check
-
-    if (silenceCheckCount < SILENCE_MAX_ASKS) {
-      // Check-in 1 or 2 — ask warmly
-      const attempt = silenceCheckCount;
-      dc.send(JSON.stringify({
-        type: "response.create",
-        response: {
-          modalities: ["text","audio"],
-          instructions: attempt === 1
-            ? "The user has been silent for 15 seconds. Ask warmly in the language you detected: 'Hey, are you still there? Take your time — I'm right here whenever you're ready.'"
-            : "Still no response from the user. Try once more, warmly: 'I can hear some quiet — are you okay? I'm still here, no rush at all.'"
-        }
-      }));
-    } else {
-      // 3rd attempt — say goodbye and end
-      stopSilenceDetection();
-      dc.send(JSON.stringify({
-        type: "response.create",
-        response: {
-          modalities: ["text","audio"],
-          instructions: "The user has not responded after three gentle check-ins. Say warmly in the language you detected: 'I haven't been able to get a response after checking a few times. I'll end the session for now — please feel free to start again whenever you're ready. Take care and goodbye!' Then end warmly."
-        }
-      }));
-      setTimeout(() => endSession(), 8000);
-    }
-  }, SILENCE_POLL_MS);
-}
-
-function stopSilenceDetection() {
-  if (silenceInterval) { clearInterval(silenceInterval); silenceInterval = null; }
+function stopSessionTimer(){
+  if(sessionTimerInterval){clearInterval(sessionTimerInterval);sessionTimerInterval=null;}
+  const hud=document.getElementById("hudBar");if(hud)hud.style.display="none";
 }
 
 
 // ══════════════════════════════════════
 // START SESSION
 // ══════════════════════════════════════
+let pc=null,stream=null,audioEl=null;
+const startBtn=document.getElementById("startBtn");
+const endBtn=document.getElementById("endBtn");
+const statusEl=document.getElementById("status");
 
-startBtn.onclick = async () => {
+startBtn.onclick=async()=>{
+  startBtn.disabled=true; endBtn.style.display="inline-block"; statusEl.innerHTML="Connecting…";
+  document.getElementById("welcomePanel").style.display="none";
+  document.getElementById("emailBanner").style.display="none";
+  resetPanel(); resetFeedback(); resetFeedbackData(); resetFlowSteps();
+  setFlowStep("intro","active");
 
-  startBtn.disabled    = true;
-  endBtn.style.display = "inline-block";
-  statusEl.innerHTML   = "Connecting…";
-  orb.classList.add("pulsing");
-  orb.classList.remove("small");
-  document.getElementById("welcomePanel").style.display = "none";
-  const durEl = document.getElementById("sessionDuration");
-  if (durEl) { durEl.textContent = "—"; durEl.style.color = "rgba(255,255,255,0.35)"; }
-  resetPanel();
-  resetFeedback();
-  resetFlowSteps();
-  setFlowStep("intro", "active");
+  try{
+    const sessionRes=await fetch("/session",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({})});
+    if(!sessionRes.ok)throw new Error("Session creation failed");
+    const session=await sessionRes.json();
+    const EPHEMERAL_KEY=session.client_secret.value;
 
-  try {
-    const sessionRes = await fetch("/session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({})
-    });
-    if (!sessionRes.ok) throw new Error("Session creation failed");
+    audioCtx=new AudioContext(); micAnalyser=audioCtx.createAnalyser(); micAnalyser.fftSize=FREQ_BINS*2;
+    pc=new RTCPeerConnection();
+    audioEl=document.createElement("audio"); audioEl.autoplay=true; document.body.appendChild(audioEl);
 
-    const session      = await sessionRes.json();
-    const EPHEMERAL_KEY = session.client_secret.value;
-
-    pc = new RTCPeerConnection();
-
-    audioEl = document.createElement("audio");
-    audioEl.autoplay = true;
-    document.body.appendChild(audioEl);
-
-    let callStarted = false;
-    pc.ontrack = (e) => {
-      audioEl.srcObject  = e.streams[0];
-      statusEl.innerHTML = '<span class="live-dot"></span>Live — Suhani is speaking';
+    pc.ontrack=(e)=>{
+      audioEl.srcObject=e.streams[0];
+      statusEl.innerHTML='<span class="live-dot"></span>Live — Suhani is speaking';
+      try{if(audioCtx&&!aiAnalyser){aiAnalyser=audioCtx.createAnalyser();aiAnalyser.fftSize=FREQ_BINS*2;audioCtx.createMediaStreamSource(e.streams[0]).connect(aiAnalyser);}}catch(_){}
     };
+    pc.onconnectionstatechange=()=>{if(pc.connectionState==="disconnected"||pc.connectionState==="failed")endSession();};
 
-    // Step 5 lights up once scenario is confirmed and mock call begins
-    // (triggered from parseAITags when SCENARIO_CONFIRMED is received)
-
-    pc.onconnectionstatechange = () => {
-      if (pc.connectionState === "disconnected" || pc.connectionState === "failed") endSession();
-    };
-
-    // Data channel — trigger AI to speak first + listen for tags
-    const dc = pc.createDataChannel("oai-events");
-
-    dc.addEventListener("open", () => {
-      dc.send(JSON.stringify({ type: "response.create" }));
-      startSilenceDetection(dc);
-      startSessionTimer();
+    const dc=pc.createDataChannel("oai-events");
+    dc.addEventListener("open",()=>{
+      sessionDC=dc; dc.send(JSON.stringify({type:"response.create"})); vizState="ai_speaking"; startSessionTimer();
+      document.getElementById("jarvisWrap").style.display="inline-block";
+    });
+    dc.addEventListener("message",(e)=>{
+      try{
+        const event=JSON.parse(e.data);
+        if(event.type==="input_audio_buffer.speech_started"){vizState="user_speaking";statusEl.innerHTML='<span class="live-dot" style="background:#22c55e"></span>Listening…';}
+        if(event.type==="input_audio_buffer.speech_stopped"){vizState="ai_speaking";statusEl.innerHTML='<span class="live-dot" style="background:#3b82f6"></span>Suhani is thinking…';}
+        if(event.type==="response.audio_transcript.delta"){vizState="ai_speaking";}
+        if(event.type==="response.done"){vizState="idle";statusEl.innerHTML='<span class="live-dot" style="background:#3b82f6"></span>Live — your turn';}
+        if(event.type==="response.audio_transcript.done"){parseAITags(event.transcript||"");}
+      }catch(_){}
     });
 
-    dc.addEventListener("message", (e) => {
-      try {
-        const event = JSON.parse(e.data);
+    stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+    stream.getTracks().forEach(t=>pc.addTrack(t,stream));
+    audioCtx.createMediaStreamSource(stream).connect(micAnalyser);
 
-        // Reset silence timer whenever user starts speaking
-        if (event.type === "input_audio_buffer.speech_started") {
-          lastUserSpeech    = Date.now();
-          silenceCheckCount = 0;
-        }
+    const offer=await pc.createOffer(); await pc.setLocalDescription(offer);
+    const sdpRes=await fetch("https://api.openai.com/v1/realtime?model=gpt-4o-mini-realtime-preview",
+      {method:"POST",headers:{Authorization:`Bearer ${EPHEMERAL_KEY}`,"Content-Type":"application/sdp"},body:offer.sdp});
+    await pc.setRemoteDescription({type:"answer",sdp:await sdpRes.text()});
 
-        // Reset silence timer when Suhani finishes speaking
-        if (event.type === "response.done") {
-          lastUserSpeech = Date.now();
-        }
-
-        if (event.type === "response.audio_transcript.done") {
-          parseAITags(event.transcript || "");
-        }
-      } catch (_) {}
-    });
-
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: true,   // removes Suhani's voice feeding back into mic
-        noiseSuppression: true,   // filters background ambient noise
-        autoGainControl:  true    // normalises mic volume so quiet speech still registers
-      }
-    });
-    stream.getTracks().forEach(t => pc.addTrack(t, stream));
-
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
-
-    const sdpRes = await fetch(
-      "https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17",
-      {
-        method: "POST",
-        headers: { Authorization: `Bearer ${EPHEMERAL_KEY}`, "Content-Type": "application/sdp" },
-        body: offer.sdp
-      }
-    );
-
-    await pc.setRemoteDescription({ type: "answer", sdp: await sdpRes.text() });
-
-  } catch (err) {
-    console.error(err);
-    statusEl.textContent = "Connection failed: " + err.message;
-    startBtn.disabled    = false;
-    endBtn.style.display = "none";
-    orb.classList.remove("pulsing");
+  }catch(err){
+    console.error(err); statusEl.textContent="Connection failed: "+err.message;
+    startBtn.disabled=false; endBtn.style.display="none"; vizState="idle";
   }
 };
 
@@ -1122,23 +683,21 @@ startBtn.onclick = async () => {
 // ══════════════════════════════════════
 // END SESSION
 // ══════════════════════════════════════
-
-function endSession() {
-  stopSilenceDetection();
+function endSession(){
   stopSessionTimer();
-  if (stream)  { stream.getTracks().forEach(t => t.stop()); stream = null; }
-  if (pc)      { pc.close(); pc = null; }
-  if (audioEl) { audioEl.remove(); audioEl = null; }
-
-  orb.classList.remove("pulsing");
-  startBtn.disabled    = false;
-  endBtn.style.display = "none";
-  statusEl.textContent = "Session ended — feedback below ↓";
-  setFlowStep("call", "done");
-  document.getElementById("welcomePanel").style.display = "block";
+  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+  if(pc){pc.close();pc=null;}
+  if(audioEl){audioEl.remove();audioEl=null;}
+  if(audioCtx){audioCtx.close();audioCtx=null;}
+  micAnalyser=null;aiAnalyser=null;sessionDC=null;vizState="idle";
+  startBtn.disabled=false; endBtn.style.display="none";
+  statusEl.textContent="Session ended — feedback below ↓";
+  setFlowStep("call","done");
+  document.getElementById("jarvisWrap").style.display="none";
+  document.getElementById("welcomePanel").style.display="block";
+  sendFeedbackEmail();
 }
-
-endBtn.onclick = endSession;
+endBtn.onclick=endSession;
 
 </script>
 </body>
