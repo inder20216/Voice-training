@@ -1,4 +1,5 @@
 .env
 node_modules/
 Bots.pem
-New Text Document.txt
+New Text Document.txtn8n-key.pem
+sessions.json
