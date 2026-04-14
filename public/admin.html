@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin Dashboard — Suhani AI</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:linear-gradient(145deg,#eef2ff,#f0f7ff,#e8f4fd);color:#0f172a;min-height:100vh;}
+
+/* NAV */
+.nav{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 6px rgba(0,0,0,0.05);position:sticky;top:0;z-index:10;}
+.nav-left{display:flex;align-items:center;gap:12px;}
+.nav-left img{height:28px;}
+.nav-title{font-size:15px;font-weight:700;color:#0f172a;}
+.nav-sub{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-link{font-size:13px;color:#3b82f6;font-weight:600;text-decoration:none;padding:6px 14px;border:1.5px solid #3b82f6;border-radius:8px;}
+.nav-link:hover{background:#eff6ff;}
+#logoutBtn{font-size:13px;color:#ef4444;font-weight:600;background:none;border:1.5px solid #fca5a5;padding:6px 14px;border-radius:8px;cursor:pointer;}
+#logoutBtn:hover{background:#fff1f2;}
+
+/* LOGIN */
+#loginWrap{min-height:calc(100vh - 58px);display:flex;align-items:center;justify-content:center;padding:24px;}
+.login-card{background:#fff;border-radius:18px;padding:36px 32px;width:100%;max-width:360px;box-shadow:0 8px 40px rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.12);}
+.login-card h2{font-size:20px;font-weight:800;text-align:center;margin-bottom:6px;}
+.login-card p{font-size:13px;color:#64748b;text-align:center;margin-bottom:24px;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#475569;margin-bottom:6px;}
+.field input{width:100%;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 14px;font-size:14px;color:#0f172a;outline:none;font-family:inherit;transition:border-color 0.2s;}
+.field input:focus{border-color:#3b82f6;background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,0.1);}
+.btn-blue{width:100%;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;font-size:14px;font-weight:700;padding:12px;border:none;border-radius:9px;cursor:pointer;margin-top:6px;box-shadow:0 4px 14px rgba(37,99,235,0.25);}
+.btn-blue:hover{opacity:0.92;}
+#loginErr{font-size:12px;color:#ef4444;text-align:center;margin-top:10px;min-height:16px;}
+
+/* DASHBOARD */
+#dashboard{display:none;padding:28px 24px 60px;max-width:1200px;margin:0 auto;}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px;}
+.stat-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+.stat-val{font-size:26px;font-weight:800;margin-bottom:3px;}
+.stat-lbl{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;}
+
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.toolbar h2{font-size:16px;font-weight:700;flex:1;}
+.btn-sm{font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;}
+.btn-export{background:#f1f5f9;color:#334155;border:1px solid #e2e8f0;}
+.btn-export:hover{background:#e2e8f0;}
+.btn-del{background:#fff1f2;color:#dc2626;border:1px solid #fca5a5;}
+.btn-del:hover{background:#fee2e2;}
+.search-box{padding:7px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:200px;}
+.search-box:focus{border-color:#3b82f6;}
+
+/* TABLE */
+.table-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:auto;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px;}
+thead th{padding:11px 14px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#94a3b8;border-bottom:1px solid #f1f5f9;background:#fafbfc;white-space:nowrap;}
+tbody tr{border-bottom:1px solid #f8fafc;transition:background 0.1s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f8fafc;}
+td{padding:11px 14px;color:#334155;vertical-align:middle;}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:0.5px;}
+.badge-ok{background:#dcfce7;color:#16a34a;}
+.badge-fail{background:#fee2e2;color:#dc2626;}
+.badge-amazing{background:#faf5ff;color:#7c3aed;}
+.badge-good{background:#dbeafe;color:#1d4ed8;}
+.badge-average{background:#fef9c3;color:#a16207;}
+.badge-needs{background:#fff7ed;color:#ea580c;}
+.badge-none{background:#f1f5f9;color:#94a3b8;}
+.expand-btn{background:none;border:1px solid #e2e8f0;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:12px;color:#64748b;}
+.expand-btn:hover{background:#f1f5f9;}
+.detail-row td{background:#f8fafc;padding:0;}
+.detail-inner{padding:14px 18px;font-size:13px;line-height:1.7;color:#475569;}
+.detail-inner strong{color:#0f172a;}
+.eval-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.eval-chip{font-size:11px;padding:3px 10px;border-radius:8px;font-weight:600;}
+.empty-row td{text-align:center;padding:32px;color:#94a3b8;font-size:14px;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn 0.3s ease both;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-left">
+    <img src="https://raw.githubusercontent.com/inder20216/openmind-assets/main/logo.png" alt="OpenMind" onerror="this.style.display='none'">
+    <div>
+      <div class="nav-title">Admin Dashboard</div>
+      <div class="nav-sub">Suhani AI · Session Logs</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <a href="/" class="nav-link">← Training</a>
+    <button id="logoutBtn" style="display:none" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- LOGIN -->
+<div id="loginWrap">
+  <div class="login-card">
+    <h2>Admin Access</h2>
+    <p>Enter your admin password to view session logs</p>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="passInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn-blue" onclick="doLogin()">Sign In</button>
+    <div id="loginErr"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="stats-row" id="statsRow"></div>
+  <div class="toolbar">
+    <h2>Session History</h2>
+    <input class="search-box" id="searchBox" placeholder="Search name, email, scenario…" oninput="renderTable()"/>
+    <button class="btn-sm btn-export" onclick="exportCSV()">Export CSV</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date &amp; Time</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Scenario</th>
+          <th>Language</th>
+          <th>Duration</th>
+          <th>Status</th>
+          <th>Tokens</th>
+          <th>Cost (₹)</th>
+          <th>Rating</th>
+          <th>Email Sent</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="sessionsBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+let token = sessionStorage.getItem("adminToken") || "";
+let allSessions = [];
+
+// ── Auto-login if token saved
+if (token) loadDashboard();
+
+async function doLogin() {
+  const pass = document.getElementById("passInput").value;
+  const errEl = document.getElementById("loginErr");
+  errEl.textContent = "";
+  try {
+    const r = await fetch("/admin/login", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ password: pass }) });
+    const d = await r.json();
+    if (!r.ok) { errEl.textContent = d.error || "Wrong password"; return; }
+    token = d.token;
+    sessionStorage.setItem("adminToken", token);
+    loadDashboard();
+  } catch { errEl.textContent = "Connection error"; }
+}
+
+function logout() {
+  sessionStorage.removeItem("adminToken");
+  token = "";
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginWrap").style.display  = "flex";
+  document.getElementById("logoutBtn").style.display  = "none";
+}
+
+async function loadDashboard() {
+  try {
+    const r = await fetch("/admin/sessions", { headers:{ Authorization:`Bearer ${token}` } });
+    if (r.status === 401) { logout(); return; }
+    allSessions = await r.json();
+    document.getElementById("loginWrap").style.display  = "none";
+    document.getElementById("dashboard").style.display  = "block";
+    document.getElementById("logoutBtn").style.display  = "inline-block";
+    renderStats();
+    renderTable();
+  } catch { document.getElementById("loginErr").textContent = "Failed to load sessions"; }
+}
+
+function renderStats() {
+  const total     = allSessions.length;
+  const completed = allSessions.filter(s => s.successful).length;
+  const totalCost = allSessions.reduce((a,s) => a + (s.costINR||0), 0);
+  const avgDur    = total ? Math.round(allSessions.reduce((a,s)=>a+(s.durationSeconds||0),0)/total) : 0;
+  const mm = String(Math.floor(avgDur/60)).padStart(2,"0"), ss = String(avgDur%60).padStart(2,"0");
+
+  document.getElementById("statsRow").innerHTML = `
+    <div class="stat-card fade-in"><div class="stat-val" style="color:#1d4ed8">${total}</div><div class="stat-lbl">Total Sessions</div></div>
+    <div class="stat-card fade-in"><div class="stat-val" style="color:#16a34a">${completed}</div><div class="stat-lbl">Completed</div></div>
+    <div class="stat-card fade-in"><div class="stat-val" style="color:#ea580c">${total - completed}</div><div class="stat-lbl">Incomplete</div></div>
+    <div class="stat-card fade-in"><div class="stat-val" style="color:#7c3aed">${mm}:${ss}</div><div class="stat-lbl">Avg Duration</div></div>
+    <div class="stat-card fade-in"><div class="stat-val" style="color:#0f172a">₹${totalCost.toFixed(2)}</div><div class="stat-lbl">Total Cost</div></div>`;
+}
+
+function renderTable() {
+  const q = (document.getElementById("searchBox").value || "").toLowerCase();
+  const filtered = allSessions.filter(s =>
+    !q ||
+    (s.name||"").toLowerCase().includes(q) ||
+    (s.email||"").toLowerCase().includes(q) ||
+    (s.scenario||"").toLowerCase().includes(q) ||
+    (s.language||"").toLowerCase().includes(q)
+  );
+
+  const tbody = document.getElementById("sessionsBody");
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="12">No sessions found</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(s => {
+    const dt   = new Date(s.timestamp);
+    const date = dt.toLocaleDateString("en-IN", { day:"2-digit", month:"short", year:"numeric" });
+    const time = dt.toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit" });
+    const totalTok = (s.tokens?.audioIn||0)+(s.tokens?.audioOut||0)+(s.tokens?.textIn||0)+(s.tokens?.textOut||0);
+    const statusBadge = s.successful
+      ? `<span class="badge badge-ok">Complete</span>`
+      : `<span class="badge badge-fail">Incomplete</span>`;
+    const rating = s.feedback?.rating || "";
+    const rClass = { Amazing:"badge-amazing", Good:"badge-good", Average:"badge-average", "Needs Work":"badge-needs" }[rating] || "badge-none";
+    const ratingBadge = rating ? `<span class="badge ${rClass}">${rating}</span>` : `<span class="badge badge-none">—</span>`;
+    const emailBadge = s.emailSent
+      ? `<span class="badge badge-ok">Sent</span>`
+      : `<span class="badge badge-none">—</span>`;
+
+    return `<tr id="row-${s.id}">
+      <td style="white-space:nowrap">${date}<br><span style="font-size:11px;color:#94a3b8">${time}</span></td>
+      <td style="font-weight:600">${esc(s.name)}</td>
+      <td style="color:#64748b">${esc(s.email||"—")}</td>
+      <td>${esc(s.scenario)}</td>
+      <td>${esc(s.language)}</td>
+      <td style="font-family:monospace;font-weight:600">${s.durationDisplay||"—"}</td>
+      <td>${statusBadge}</td>
+      <td style="font-family:monospace">${totalTok.toLocaleString()}</td>
+      <td style="font-weight:600">₹${(s.costINR||0).toFixed(3)}</td>
+      <td>${ratingBadge}</td>
+      <td>${emailBadge}</td>
+      <td><button class="expand-btn" onclick="toggleDetail('${s.id}')">▸ Details</button></td>
+    </tr>
+    <tr class="detail-row" id="detail-${s.id}" style="display:none">
+      <td colspan="12">${buildDetail(s)}</td>
+    </tr>`;
+  }).join("");
+}
+
+function buildDetail(s) {
+  const f = s.feedback;
+  if (!f) return `<div class="detail-inner"><em>No feedback data — session was incomplete.</em></div>`;
+
+  const evals = (f.evals||[]).map(e => {
+    const c = {Excellent:"#16a34a",Good:"#2563eb","Needs Work":"#ea580c",Poor:"#dc2626"}[e.rating]||"#94a3b8";
+    return `<span class="eval-chip" style="background:${c}22;color:${c}">${esc(e.area)}: ${esc(e.rating)}</span>`;
+  }).join("");
+
+  const tokenBreakdown = s.tokens
+    ? `Audio in: ${(s.tokens.audioIn||0).toLocaleString()} · Audio out: ${(s.tokens.audioOut||0).toLocaleString()} · Text in: ${(s.tokens.textIn||0).toLocaleString()} · Text out: ${(s.tokens.textOut||0).toLocaleString()}`
+    : "—";
+
+  return `<div class="detail-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div><strong>Score:</strong> ${esc(f.score||"—")}</div>
+      <div><strong>Rating:</strong> ${esc(f.rating||"—")}</div>
+      <div><strong>Strength:</strong> ${esc(f.strength||"—")}</div>
+      <div><strong>Priority:</strong> ${esc(f.priority||"—")}</div>
+    </div>
+    <div class="eval-chips">${evals||"<em>No area scores</em>"}</div>
+    <div style="margin-top:10px;font-size:11px;color:#94a3b8"><strong>Token breakdown:</strong> ${tokenBreakdown}</div>
+  </div>`;
+}
+
+function toggleDetail(id) {
+  const row = document.getElementById(`detail-${id}`);
+  const btn = document.querySelector(`#row-${id} .expand-btn`);
+  const open = row.style.display !== "none";
+  row.style.display = open ? "none" : "table-row";
+  btn.textContent   = open ? "▸ Details" : "▾ Hide";
+}
+
+function exportCSV() {
+  const headers = ["Date","Time","Name","Email","Scenario","Language","Duration","Status","Tokens","Cost INR","Rating","Email Sent"];
+  const rows = allSessions.map(s => {
+    const dt = new Date(s.timestamp);
+    const totalTok = (s.tokens?.audioIn||0)+(s.tokens?.audioOut||0)+(s.tokens?.textIn||0)+(s.tokens?.textOut||0);
+    return [
+      dt.toLocaleDateString("en-IN"),
+      dt.toLocaleTimeString("en-IN"),
+      s.name, s.email, s.scenario, s.language, s.durationDisplay,
+      s.successful ? "Complete" : "Incomplete",
+      totalTok, (s.costINR||0).toFixed(3),
+      s.feedback?.rating || "—",
+      s.emailSent ? "Yes" : "No"
+    ].map(v => `"${String(v||"").replace(/"/g,'""')}"`).join(",");
+  });
+  const csv  = [headers.join(","), ...rows].join("\n");
+  const blob = new Blob([csv], { type:"text/csv" });
+  const a    = Object.assign(document.createElement("a"), { href:URL.createObjectURL(blob), download:`suhani-sessions-${Date.now()}.csv` });
+  a.click();
+}
+
+function esc(str) {
+  return String(str||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+</script>
+</body>
+</html>

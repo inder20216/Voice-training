@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Call Audit — Suhani AI</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(145deg, #eef2ff 0%, #f0f7ff 50%, #e8f4fd 100%);
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.nav {
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0 28px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-logo img { height: 28px; width: auto; }
+.nav-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.3px;
+}
+.nav-sub { font-size: 11px; color: #94a3b8; letter-spacing: 0.5px; text-transform: uppercase; }
+.nav-back {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 14px;
+  border: 1.5px solid #3b82f6;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+.nav-back:hover { background: #eff6ff; }
+
+/* ── PAGE ── */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 36px 24px 60px;
+}
+
+.page-heading {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.page-heading h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.page-heading p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+}
+.lang-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.lang-badge {
+  font-size: 11px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-weight: 600;
+}
+
+/* ── CARD ── */
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.card-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #94a3b8;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #3b82f6;
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 18px;
+  border: 1px solid #e2e8f0;
+}
+.tab {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: all 0.15s;
+  user-select: none;
+}
+.tab.active {
+  background: #fff;
+  color: #1d4ed8;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* ── UPLOAD ZONE ── */
+#dropZone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 32px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+}
+#dropZone:hover, #dropZone.dragover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+#dropZone input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.drop-icon { font-size: 32px; margin-bottom: 10px; }
+.drop-text { font-size: 14px; color: #475569; font-weight: 500; }
+.drop-sub  { font-size: 12px; color: #94a3b8; margin-top: 5px; }
+#fileChosen { font-size: 13px; color: #16a34a; font-weight: 600; margin-top: 8px; }
+
+/* ── URL INPUT ── */
+.url-input-wrap { position: relative; }
+.url-input-wrap input {
+  width: 100%;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: #0f172a;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+.url-input-wrap input:focus {
+  border-color: #3b82f6;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+.url-input-wrap input::placeholder { color: #94a3b8; }
+.url-note { font-size: 11px; color: #94a3b8; margin-top: 7px; }
+
+/* ── BUTTON ── */
+.btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 16px;
+  letter-spacing: 0.3px;
+  transition: transform 0.15s, box-shadow 0.2s, opacity 0.15s;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+}
+.btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37,99,235,0.3); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-audit {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  box-shadow: 0 4px 14px rgba(124,58,237,0.25);
+}
+.btn-audit:hover:not(:disabled) { box-shadow: 0 6px 18px rgba(124,58,237,0.3); }
+
+/* ── SPINNER ── */
+.spinner-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  font-size: 13px;
+  color: #64748b;
+}
+.spinner {
+  width: 18px; height: 18px;
+  border: 2.5px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── TRANSCRIPT ── */
+.transcript-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lang-pill {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+.transcript-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  max-height: 280px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #334155;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.segment {
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.segment:last-child { border-bottom: none; margin-bottom: 0; }
+.seg-time {
+  font-size: 10px;
+  color: #94a3b8;
+  font-weight: 600;
+  margin-right: 8px;
+  font-family: monospace;
+}
+
+/* ── EVALUATION ── */
+.score-hero {
+  text-align: center;
+  padding: 20px 0 12px;
+}
+.score-big {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.score-rating {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+.score-summary {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 10px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.metrics-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px 0;
+}
+.metric-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.metric-label {
+  font-size: 13px;
+  color: #334155;
+  font-weight: 500;
+  flex: 1;
+  min-width: 0;
+}
+.metric-score {
+  font-size: 12px;
+  color: #64748b;
+  width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.metric-bar-wrap {
+  width: 120px;
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.metric-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+.metric-comment {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.rating-pill {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.r-excellent { background: #dcfce7; color: #16a34a; }
+.r-good      { background: #dbeafe; color: #1d4ed8; }
+.r-average   { background: #fef9c3; color: #a16207; }
+.r-poor      { background: #fee2e2; color: #dc2626; }
+
+.moments-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
+@media (max-width: 500px) { .moments-grid { grid-template-columns: 1fr; } }
+
+.moments-col h4 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 10px;
+}
+.moments-col.good h4  { color: #16a34a; }
+.moments-col.needs h4 { color: #ea580c; }
+
+.moment-item {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.5;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  display: flex;
+  gap: 8px;
+}
+.moment-item span { flex-shrink: 0; }
+.moments-col.good .moment-item  { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.moments-col.needs .moment-item { background: #fff7ed; border: 1px solid #fed7aa; }
+
+.rec-box {
+  background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 4px;
+  font-size: 13px;
+  color: #1e40af;
+  line-height: 1.6;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.hidden { display: none !important; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeUp 0.35s ease both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <img src="https://raw.githubusercontent.com/inder20216/openmind-assets/main/logo.png" alt="OpenMind" onerror="this.style.display='none'">
+    <div>
+      <div class="nav-title">Call Audit</div>
+      <div class="nav-sub">AI-powered quality analysis</div>
+    </div>
+  </div>
+  <a href="/" class="nav-back">← Suhani Training</a>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <div class="page-heading">
+    <h1>Call Quality Audit</h1>
+    <p>Upload a call recording or paste a link — our AI will transcribe and evaluate it in seconds.</p>
+    <div class="lang-badges">
+      <span class="lang-badge">Hindi</span>
+      <span class="lang-badge">English</span>
+      <span class="lang-badge">Tamil</span>
+      <span class="lang-badge">Telugu</span>
+      <span class="lang-badge">Malayalam</span>
+      <span class="lang-badge">Kannada</span>
+      <span class="lang-badge">Marathi</span>
+      <span class="lang-badge">Bengali</span>
+    </div>
+  </div>
+
+  <!-- UPLOAD CARD -->
+  <div class="card" id="uploadCard">
+    <div class="card-title"><span class="dot"></span>Upload Recording</div>
+
+    <div class="tabs">
+      <div class="tab active" id="tabFile" onclick="switchTab('file')">Upload File</div>
+      <div class="tab"        id="tabUrl"  onclick="switchTab('url')">Paste URL</div>
+    </div>
+
+    <!-- File tab -->
+    <div id="panelFile">
+      <div id="dropZone">
+        <input type="file" id="fileInput" accept="audio/*,video/*,.mp3,.mp4,.m4a,.wav,.ogg,.webm,.flac" />
+        <div class="drop-icon">🎙️</div>
+        <div class="drop-text">Drop your audio file here</div>
+        <div class="drop-sub">or click to browse — MP3, M4A, WAV, OGG, FLAC (max 25 MB)</div>
+        <div id="fileChosen"></div>
+      </div>
+    </div>
+
+    <!-- URL tab -->
+    <div id="panelUrl" class="hidden">
+      <div class="url-input-wrap">
+        <input type="url" id="urlInput" placeholder="https://example.com/call-recording.mp3" />
+      </div>
+      <div class="url-note">Direct link to an audio or video file (MP3, M4A, WAV, OGG, etc.)</div>
+    </div>
+
+    <button class="btn-primary" id="transcribeBtn" onclick="startTranscribe()">Transcribe Call</button>
+    <div id="transcribeSpinner" class="spinner-wrap hidden">
+      <div class="spinner"></div>Transcribing… this may take a moment
+    </div>
+    <div id="transcribeErr" style="font-size:13px;color:#ef4444;margin-top:10px;text-align:center"></div>
+  </div>
+
+  <!-- TRANSCRIPT CARD -->
+  <div class="card hidden fade-in" id="transcriptCard">
+    <div class="card-title"><span class="dot"></span>Transcript</div>
+    <div class="transcript-header">
+      <span style="font-size:13px;color:#64748b" id="transcriptMeta"></span>
+      <span class="lang-pill" id="langPill"></span>
+    </div>
+    <div class="transcript-box" id="transcriptBox"></div>
+    <button class="btn-primary btn-audit" style="margin-top:18px" id="auditBtn" onclick="startAudit()">Audit This Call</button>
+    <div id="auditSpinner" class="spinner-wrap hidden">
+      <div class="spinner"></div>Analysing call quality…
+    </div>
+    <div id="auditErr" style="font-size:13px;color:#ef4444;margin-top:10px;text-align:center"></div>
+  </div>
+
+  <!-- EVALUATION CARD -->
+  <div class="card hidden fade-in" id="evalCard">
+    <div class="card-title"><span class="dot" style="background:#7c3aed"></span>Evaluation</div>
+
+    <div class="score-hero">
+      <div class="score-big" id="evalScore">—</div>
+      <div class="score-rating" id="evalRating">—</div>
+      <div class="score-summary" id="evalSummary"></div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid #f1f5f9;margin:16px 0">
+
+    <div class="metrics-grid" id="metricsGrid"></div>
+
+    <hr style="border:none;border-top:1px solid #f1f5f9;margin:16px 0">
+
+    <div class="moments-grid">
+      <div class="moments-col good">
+        <h4>What went well</h4>
+        <div id="goodMoments"></div>
+      </div>
+      <div class="moments-col needs">
+        <h4>Needs improvement</h4>
+        <div id="needsMoments"></div>
+      </div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid #f1f5f9;margin:16px 0">
+
+    <div class="card-title" style="margin-bottom:10px"><span class="dot" style="background:#7c3aed"></span>Top Recommendation</div>
+    <div class="rec-box">
+      <span>💡</span>
+      <div id="topRec"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Tab switching
+let activeTab = "file";
+function switchTab(tab) {
+  activeTab = tab;
+  document.getElementById("tabFile").classList.toggle("active", tab === "file");
+  document.getElementById("tabUrl").classList.toggle("active",  tab === "url");
+  document.getElementById("panelFile").classList.toggle("hidden", tab !== "file");
+  document.getElementById("panelUrl").classList.toggle("hidden",  tab !== "url");
+}
+
+// ── File picker feedback
+const fileInput  = document.getElementById("fileInput");
+const fileChosen = document.getElementById("fileChosen");
+const dropZone   = document.getElementById("dropZone");
+
+fileInput.addEventListener("change", () => {
+  if (fileInput.files[0]) fileChosen.textContent = "✓ " + fileInput.files[0].name;
+});
+dropZone.addEventListener("dragover",  e => { e.preventDefault(); dropZone.classList.add("dragover"); });
+dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+dropZone.addEventListener("drop", e => {
+  e.preventDefault(); dropZone.classList.remove("dragover");
+  if (e.dataTransfer.files[0]) {
+    fileInput.files = e.dataTransfer.files;
+    fileChosen.textContent = "✓ " + e.dataTransfer.files[0].name;
+  }
+});
+
+// ── State
+let fullTranscript = "";
+
+// ── Transcribe
+async function startTranscribe() {
+  const errEl    = document.getElementById("transcribeErr");
+  const spinner  = document.getElementById("transcribeSpinner");
+  const btn      = document.getElementById("transcribeBtn");
+  errEl.textContent = "";
+
+  let body, headers = {};
+
+  if (activeTab === "file") {
+    const file = fileInput.files[0];
+    if (!file) { errEl.textContent = "Please select an audio file."; return; }
+    if (file.size > 25 * 1024 * 1024) { errEl.textContent = "File must be under 25 MB."; return; }
+    body = new FormData();
+    body.append("audio", file);
+  } else {
+    const url = document.getElementById("urlInput").value.trim();
+    if (!url) { errEl.textContent = "Please enter a URL."; return; }
+    body    = JSON.stringify({ url });
+    headers = { "Content-Type": "application/json" };
+  }
+
+  btn.disabled = true;
+  spinner.classList.remove("hidden");
+
+  try {
+    const resp = await fetch("/audit/transcribe", { method: "POST", headers, body });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || "Transcription failed");
+    renderTranscript(data);
+  } catch (err) {
+    errEl.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+    spinner.classList.add("hidden");
+  }
+}
+
+function renderTranscript(data) {
+  fullTranscript = data.transcript || "";
+  const segments = data.segments  || [];
+  const lang     = data.language  || "auto";
+
+  document.getElementById("langPill").textContent     = lang.charAt(0).toUpperCase() + lang.slice(1);
+  document.getElementById("transcriptMeta").textContent = `${segments.length || "—"} segments · ${fullTranscript.split(/\s+/).length} words`;
+
+  const box = document.getElementById("transcriptBox");
+  if (segments.length > 0) {
+    box.innerHTML = segments.map(s => {
+      const ts = formatTime(s.start || 0);
+      return `<div class="segment"><span class="seg-time">[${ts}]</span>${escHtml(s.text || "")}</div>`;
+    }).join("");
+  } else {
+    box.textContent = fullTranscript;
+  }
+
+  document.getElementById("transcriptCard").classList.remove("hidden");
+  document.getElementById("evalCard").classList.add("hidden");
+  document.getElementById("transcriptCard").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function escHtml(str) {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+// ── Audit
+async function startAudit() {
+  const errEl   = document.getElementById("auditErr");
+  const spinner = document.getElementById("auditSpinner");
+  const btn     = document.getElementById("auditBtn");
+  errEl.textContent = "";
+
+  btn.disabled = true;
+  spinner.classList.remove("hidden");
+
+  try {
+    const resp = await fetch("/audit/evaluate", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ transcript: fullTranscript })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || "Evaluation failed");
+    renderEval(data);
+  } catch (err) {
+    errEl.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+    spinner.classList.add("hidden");
+  }
+}
+
+function renderEval(d) {
+  // Score + rating
+  const ratingColor = { Excellent:"#16a34a", Good:"#2563eb", Average:"#a16207", Poor:"#dc2626" };
+  const color = ratingColor[d.overall_rating] || "#334155";
+  document.getElementById("evalScore").textContent   = d.overall_score  || "—";
+  document.getElementById("evalScore").style.color   = color;
+  document.getElementById("evalRating").textContent  = d.overall_rating || "—";
+  document.getElementById("evalRating").style.color  = color;
+  document.getElementById("evalSummary").textContent = d.call_summary || "";
+
+  // Metrics
+  const grid = document.getElementById("metricsGrid");
+  grid.innerHTML = (d.metrics || []).map(m => {
+    const [scoreNum] = (m.score || "5/10").split("/");
+    const pct = Math.round((parseFloat(scoreNum) / 10) * 100);
+    const barColor = pct >= 80 ? "#16a34a" : pct >= 60 ? "#2563eb" : pct >= 40 ? "#f59e0b" : "#ef4444";
+    const rClass = { Excellent:"r-excellent", Good:"r-good", Average:"r-average", Poor:"r-poor" }[m.rating] || "r-average";
+    return `<div>
+      <div class="metric-row">
+        <span class="metric-label">${escHtml(m.area||"")}</span>
+        <div class="metric-bar-wrap"><div class="metric-bar" style="width:${pct}%;background:${barColor}"></div></div>
+        <span class="metric-score">${escHtml(m.score||"")}</span>
+        <span class="rating-pill ${rClass}">${escHtml(m.rating||"")}</span>
+      </div>
+      <div class="metric-comment">${escHtml(m.comment||"")}</div>
+    </div>`;
+  }).join("");
+
+  // Good moments
+  const goodEl = document.getElementById("goodMoments");
+  goodEl.innerHTML = (d.good_moments || []).map(g =>
+    `<div class="moment-item"><span>✅</span><span>${escHtml(g)}</span></div>`
+  ).join("") || "<div class='moment-item'><span>—</span><span>None identified</span></div>";
+
+  // Improvement
+  const needsEl = document.getElementById("needsMoments");
+  needsEl.innerHTML = (d.improvement_areas || []).map(n =>
+    `<div class="moment-item"><span>⚠️</span><span>${escHtml(n)}</span></div>`
+  ).join("") || "<div class='moment-item'><span>—</span><span>None identified</span></div>";
+
+  // Top rec
+  document.getElementById("topRec").textContent = d.top_recommendation || "—";
+
+  const evalCard = document.getElementById("evalCard");
+  evalCard.classList.remove("hidden");
+  evalCard.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+</script>
+</body>
+</html>

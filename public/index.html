@@ -130,7 +130,6 @@ button:disabled { opacity: 0.35; cursor: not-allowed; }
 #endBtn {
   background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
-  display: none;
   box-shadow: 0 3px 12px rgba(239,68,68,0.25);
 }
 
@@ -182,6 +181,139 @@ button:disabled { opacity: 0.35; cursor: not-allowed; }
   font-weight: 600;
   color: #16a34a;
 }
+
+/* ══════════════════════════════
+   SESSION FORM
+══════════════════════════════ */
+.session-form {
+  width: 100%;
+  max-width: 520px;
+  background: #fff;
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 18px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 4px 24px rgba(59,130,246,0.08);
+  margin-top: 16px;
+  text-align: left;
+}
+.form-intro {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 20px;
+  text-align: center;
+  line-height: 1.6;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+@media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+.form-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.form-field:last-child { margin-bottom: 0; }
+.form-field label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #475569;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: #3b82f6;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+.form-field textarea { resize: none; }
+.field-hint { font-size: 11px; color: #94a3b8; }
+.req { color: #ef4444; }
+.instructions {
+  background: #f0f7ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 11px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+.instr-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+.instr-steps { display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
+.instr-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.5;
+}
+.instr-num {
+  min-width: 20px;
+  height: 20px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.instr-tip {
+  font-size: 12px;
+  color: #475569;
+  background: #fff;
+  border-radius: 7px;
+  padding: 8px 10px;
+  border: 1px solid #dbeafe;
+  line-height: 1.5;
+}
+
+.form-err {
+  font-size: 12px;
+  color: #ef4444;
+  text-align: center;
+  min-height: 16px;
+  margin-bottom: 8px;
+}
+#startBtn {
+  width: 100%;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(34,197,94,0.3);
+  transition: transform 0.15s, box-shadow 0.2s, opacity 0.15s;
+  letter-spacing: 0.3px;
+}
+#startBtn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(34,197,94,0.35); }
+#startBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 /* ══════════════════════════════
    FEEDBACK PANEL
@@ -316,31 +448,83 @@ button:disabled { opacity: 0.35; cursor: not-allowed; }
     <div class="main-title">SUHANI</div>
     <div class="main-sub">AI Voice Mentor &nbsp;·&nbsp; Corporate Soft Skills Training</div>
 
+    <!-- PRE-SESSION FORM -->
     <div id="welcomePanel">
-      <p class="welcome-desc">
-        Suhani will conduct a live mock call and deliver honest, detailed feedback on your communication skills.
-      </p>
-      <div class="scenario-row">
-        <span class="scenario-tag">😠 Angry Customer</span>
-        <span class="scenario-tag">🏥 Healthcare</span>
-        <span class="scenario-tag">📈 Sales Call</span>
-        <span class="scenario-tag">🎙️ Interview</span>
-        <span class="scenario-tag">💬 Soft Skills</span>
-        <span class="scenario-tag">✏️ Custom</span>
+      <div class="session-form">
+        <p class="form-intro">Fill in your details and Suhani will jump straight into your mock call — no setup questions needed.</p>
+
+        <div class="instructions">
+          <div class="instr-title">How it works</div>
+          <div class="instr-steps">
+            <div class="instr-step"><span class="instr-num">1</span><span>Fill the form below and click <strong>Start Training Session</strong></span></div>
+            <div class="instr-step"><span class="instr-num">2</span><span>Allow microphone access when your browser asks</span></div>
+            <div class="instr-step"><span class="instr-num">3</span><span>Suhani will greet you and start the mock call — <strong>you are the agent</strong>, she plays the caller</span></div>
+            <div class="instr-step"><span class="instr-num">4</span><span>Speak naturally. The call runs up to <strong>5 minutes</strong></span></div>
+            <div class="instr-step"><span class="instr-num">5</span><span>Once done, tap <strong>Get My Feedback</strong> — your written evaluation will be emailed to you</span></div>
+          </div>
+          <div class="instr-tip">💡 <strong>Tip:</strong> Use a headset or earphones for the best experience. Find a quiet space before starting.</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Your Name</label>
+            <input type="text" id="formName" placeholder="e.g. Rahul Sharma" autocomplete="name"/>
+          </div>
+          <div class="form-field">
+            <label>Your Email <span class="req">*</span></label>
+            <input type="email" id="formEmail" placeholder="you@company.com" autocomplete="email"/>
+            <div class="field-hint">Feedback will be sent here</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Preferred Language</label>
+            <select id="formLang">
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Gujarati">Gujarati</option>
+              <option value="Tamil">Tamil</option>
+              <option value="Telugu">Telugu</option>
+              <option value="Malayalam">Malayalam</option>
+              <option value="Kannada">Kannada</option>
+              <option value="Marathi">Marathi</option>
+              <option value="Bengali">Bengali</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Call Scenario</label>
+            <select id="formScenario" onchange="toggleCustom()">
+              <option value="angry_customer">😠 Angry Customer</option>
+              <option value="healthcare">🏥 Healthcare / Medical</option>
+              <option value="sales">📈 Sales Call</option>
+              <option value="interview">🎙️ Job Interview</option>
+              <option value="soft_skills">💬 Soft Skills</option>
+              <option value="custom">✏️ Custom (describe below)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field" id="customWrap" style="display:none">
+          <label>Describe your custom scenario</label>
+          <textarea id="formCustom" rows="2" placeholder="e.g. A customer calling to dispute an insurance claim…"></textarea>
+        </div>
+
+        <div id="formErr" class="form-err"></div>
+        <button id="startBtn" onclick="handleFormSubmit()">Start Training Session</button>
       </div>
     </div>
 
-    <!-- Jarvis in dark orb container -->
-    <div id="jarvisWrap">
+    <!-- Jarvis — hidden until session starts -->
+    <div id="jarvisWrap" style="display:none">
       <canvas id="jarvis" width="280" height="280"></canvas>
     </div>
 
-    <div class="btn-row">
-      <button id="startBtn">Start Session</button>
-      <button id="endBtn">End Session</button>
+    <div class="btn-row" style="display:none" id="sessionBtns">
+      <button id="endBtn">End Call</button>
     </div>
 
-    <div id="status">Click <strong>Start Session</strong> — Suhani will take it from here</div>
+    <div id="status"></div>
 
     <div id="hudBar">
       <div class="hud-item">
@@ -386,7 +570,56 @@ button:disabled { opacity: 0.35; cursor: not-allowed; }
 
 <script>
 
-let userEmail = "", managerEmail = "";
+let userEmail = "", managerEmail = "", userName = "", userLanguage = "", userScenario = "", userCustomScenario = "";
+
+function toggleCustom() {
+  const s = document.getElementById("formScenario").value;
+  document.getElementById("customWrap").style.display = s === "custom" ? "block" : "none";
+}
+
+function handleFormSubmit() {
+  const name     = document.getElementById("formName").value.trim();
+  const email    = document.getElementById("formEmail").value.trim();
+  const lang     = document.getElementById("formLang").value;
+  const scenario = document.getElementById("formScenario").value;
+  const custom   = document.getElementById("formCustom").value.trim();
+  const errEl    = document.getElementById("formErr");
+  errEl.textContent = "";
+
+  if (!name)  { errEl.textContent = "Please enter your name.";  document.getElementById("formName").focus();  return; }
+  if (!email || !email.includes("@")) { errEl.textContent = "Please enter a valid email."; document.getElementById("formEmail").focus(); return; }
+  if (scenario === "custom" && !custom) { errEl.textContent = "Please describe your custom scenario."; document.getElementById("formCustom").focus(); return; }
+
+  userName            = name;
+  userEmail           = email;
+  userLanguage        = lang;
+  userScenario        = scenario;
+  userCustomScenario  = custom;
+
+  // Pre-fill feedbackData so logging works even if tags aren't parsed
+  feedbackData.name     = name;
+  feedbackData.scenario = SCENARIO_LABELS[scenario] || scenario;
+
+  doStartSession();
+}
+
+// ══════════════════════════════════════
+// SILENT TOKEN TRACKER
+// ══════════════════════════════════════
+const PRICE = { audioIn:10/1e6, audioOut:20/1e6, textIn:1.10/1e6, textOut:2.20/1e6 };
+const USD_TO_INR = 84;
+let tok = { audioIn:0, audioOut:0, textIn:0, textOut:0 };
+function addTokenUsage(usage) {
+  if (!usage) return;
+  tok.audioIn  += usage.input_token_details?.audio_tokens  || 0;
+  tok.audioOut += usage.output_token_details?.audio_tokens || 0;
+  tok.textIn   += usage.input_token_details?.text_tokens   || 0;
+  tok.textOut  += usage.output_token_details?.text_tokens  || 0;
+}
+function resetTokens() { tok = { audioIn:0, audioOut:0, textIn:0, textOut:0 }; }
+function calcCostINR() {
+  return ((tok.audioIn*PRICE.audioIn + tok.audioOut*PRICE.audioOut + tok.textIn*PRICE.textIn + tok.textOut*PRICE.textOut) * USD_TO_INR);
+}
 
 // ══════════════════════════════════════
 // JARVIS VISUALIZER
@@ -580,10 +813,13 @@ function parseAITags(text){
   langTags.forEach(([,lang])=>addLanguageChip(lang));
   m=text.match(/\[SCENARIO_CONFIRMED:\s*([^\]]+)\]/i);
   if(m){feedbackData.scenario=SCENARIO_MAP[m[1].trim().toLowerCase()]||m[1].trim();setPanelValue("displayScenario",feedbackData.scenario);markStepDone("scenario");}
+  // CALL_DONE — voice phase is over, show text feedback button
+  if(/\[CALL_DONE\]/i.test(text)){callSuccessful=true;markStepDone("call");showGetFeedbackBtn();}
+  // EVAL tags — from text feedback endpoint
   const evalTags=[...text.matchAll(/\[EVAL:\s*([^|\]]+)\|\s*([^\]]+)\]/gi)];
   evalTags.forEach(([,label,value])=>{
     const l=label.trim(),v=value.trim(),lk=l.toLowerCase();
-    if(lk==="score"){showFeedbackPanel();document.getElementById("overallScore").innerHTML=`${v} <span></span>`;feedbackData.score=v;markStepDone("call");}
+    if(lk==="score"){showFeedbackPanel();document.getElementById("overallScore").innerHTML=`${v} <span></span>`;feedbackData.score=v;}
     else if(lk==="strength"){document.getElementById("strengthText").textContent=v;feedbackData.strength=v;}
     else if(lk==="priority"){document.getElementById("priorityText").textContent=v;feedbackData.priority=v;markStepDone("feedback");}
     else if(lk==="rating"){const el=document.getElementById("overallRating");el.textContent=v;el.className="overall-rating-badge "+ratingClass(v);feedbackData.rating=v;sendFeedbackEmail();}
@@ -592,11 +828,92 @@ function parseAITags(text){
   if(/\[CALL_RATING:\s*amazing\]/i.test(text))addAmazingCall();
 }
 
+// ══════════════════════════════════════
+// TRANSCRIPT ACCUMULATION
+// ══════════════════════════════════════
+let callTranscript = [];
+function appendTranscript(role, text){
+  // Strip machine tags from stored transcript
+  const clean = text.replace(/\[[A-Z_]+:[^\]]*\]/gi,"").trim();
+  if(clean) callTranscript.push(`${role}: ${clean}`);
+}
+function resetTranscript(){ callTranscript = []; }
+
+// ══════════════════════════════════════
+// TEXT FEEDBACK BUTTON + FETCH
+// ══════════════════════════════════════
+function showGetFeedbackBtn(){
+  const existing = document.getElementById("getFeedbackBtn");
+  if(existing) return;
+  const btn = document.createElement("button");
+  btn.id = "getFeedbackBtn";
+  btn.textContent = "📋 Get My Feedback";
+  btn.style.cssText = "display:block;margin:14px auto 0;padding:11px 28px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;font-size:14px;font-weight:700;border:none;border-radius:10px;cursor:pointer;box-shadow:0 4px 14px rgba(124,58,237,0.3);";
+  btn.onclick = fetchTextFeedback;
+  const hudBar = document.getElementById("hudBar");
+  if(hudBar) hudBar.insertAdjacentElement("afterend", btn);
+}
+
+async function fetchTextFeedback(){
+  const btn = document.getElementById("getFeedbackBtn");
+  if(btn){ btn.disabled=true; btn.textContent="Generating feedback…"; }
+  try{
+    const res = await fetch("/feedback",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        transcript: callTranscript.join("\n"),
+        name:       feedbackData.name,
+        scenario:   feedbackData.scenario
+      })
+    });
+    const data = await res.json();
+    if(data.text) renderTextFeedback(data.text);
+  }catch(e){
+    if(btn){ btn.disabled=false; btn.textContent="📋 Get My Feedback"; }
+    console.error("Feedback fetch error:",e);
+  }
+}
+
+function renderTextFeedback(text){
+  // Remove machine tags from display text, parse them for structured UI
+  parseAITags(text);
+  const clean = text.replace(/\[[A-Z_]+:[^\]]*\]/gi,"").replace(/\n{3,}/g,"\n\n").trim();
+
+  showFeedbackPanel();
+
+  // Insert a chat-style text block at the top of the feedback panel
+  let chatEl = document.getElementById("suhaniTextFeedback");
+  if(!chatEl){
+    chatEl = document.createElement("div");
+    chatEl.id = "suhaniTextFeedback";
+    chatEl.style.cssText = "background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#334155;white-space:pre-wrap;";
+    const header = document.createElement("div");
+    header.style.cssText = "font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:12px;";
+    header.textContent = "Suhani's Feedback";
+    chatEl.prepend(header);
+    document.getElementById("feedbackPanel").prepend(chatEl);
+  }
+  // Typewriter effect
+  chatEl.innerHTML = '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:12px;">Suhani\'s Feedback</div>';
+  const textNode = document.createElement("div");
+  chatEl.appendChild(textNode);
+  let i = 0;
+  const speed = 18;
+  function type(){
+    if(i < clean.length){ textNode.textContent += clean[i++]; setTimeout(type, speed); }
+  }
+  type();
+
+  const btn = document.getElementById("getFeedbackBtn");
+  if(btn) btn.style.display = "none";
+}
+
 
 // ══════════════════════════════════════
 // SESSION TIMER + 3-MIN HARD CUTOFF
 // ══════════════════════════════════════
-let sessionTimerInterval=null, sessionStartTime=0, sessionDC=null;
+let sessionTimerInterval=null, sessionStartTime=0, sessionDC=null, callSuccessful=false;
 
 function startSessionTimer(){
   sessionStartTime=Date.now();
@@ -606,7 +923,7 @@ function startSessionTimer(){
     const secs=Math.floor((Date.now()-sessionStartTime)/1000);
     const m=String(Math.floor(secs/60)).padStart(2,"0"),s=String(secs%60).padStart(2,"0");
     if(disp)disp.textContent=`${m}:${s}`;
-    if(secs>=180)endSession();
+    if(secs>=300)endSession();
   },1000);
 }
 
@@ -620,19 +937,27 @@ function stopSessionTimer(){
 // START SESSION
 // ══════════════════════════════════════
 let pc=null,stream=null,audioEl=null;
-const startBtn=document.getElementById("startBtn");
-const endBtn=document.getElementById("endBtn");
+
 const statusEl=document.getElementById("status");
 
-startBtn.onclick=async()=>{
-  startBtn.disabled=true; endBtn.style.display="inline-block"; statusEl.innerHTML="Connecting…";
+const SCENARIO_LABELS = { angry_customer:"Angry Customer", healthcare:"Healthcare / Medical", sales:"Sales Call", interview:"Job Interview", soft_skills:"Soft Skills", custom:"Custom Scenario" };
+
+async function doStartSession(){
+  const startBtn = document.getElementById("startBtn");
+  startBtn.disabled = true; statusEl.innerHTML = "Connecting…";
   document.getElementById("welcomePanel").style.display="none";
+  document.getElementById("sessionBtns").style.display="flex";
   document.getElementById("emailBanner").style.display="none";
-  resetPanel(); resetFeedback(); resetFeedbackData(); resetFlowSteps();
+  resetPanel(); resetFeedback(); resetFeedbackData(); resetFlowSteps(); resetTranscript(); resetTokens();
+  callSuccessful = false;
+  const oldFbBtn = document.getElementById("getFeedbackBtn");
+  if(oldFbBtn) oldFbBtn.remove();
+  const oldTf = document.getElementById("suhaniTextFeedback");
+  if(oldTf) oldTf.remove();
   setFlowStep("intro","active");
 
   try{
-    const sessionRes=await fetch("/session",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({})});
+    const sessionRes=await fetch("/session",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ name:userName, language:userLanguage, scenario:userScenario, customScenario:userCustomScenario })});
     if(!sessionRes.ok)throw new Error("Session creation failed");
     const session=await sessionRes.json();
     const EPHEMERAL_KEY=session.client_secret.value;
@@ -659,8 +984,9 @@ startBtn.onclick=async()=>{
         if(event.type==="input_audio_buffer.speech_started"){vizState="user_speaking";statusEl.innerHTML='<span class="live-dot" style="background:#22c55e"></span>Listening…';}
         if(event.type==="input_audio_buffer.speech_stopped"){vizState="ai_speaking";statusEl.innerHTML='<span class="live-dot" style="background:#3b82f6"></span>Suhani is thinking…';}
         if(event.type==="response.audio_transcript.delta"){vizState="ai_speaking";}
-        if(event.type==="response.done"){vizState="idle";statusEl.innerHTML='<span class="live-dot" style="background:#3b82f6"></span>Live — your turn';}
-        if(event.type==="response.audio_transcript.done"){parseAITags(event.transcript||"");}
+        if(event.type==="response.done"){vizState="idle";statusEl.innerHTML='<span class="live-dot" style="background:#3b82f6"></span>Live — your turn';addTokenUsage(event.response?.usage);}
+        if(event.type==="response.audio_transcript.done"){const t=event.transcript||"";parseAITags(t);appendTranscript("Suhani",t);}
+        if(event.type==="conversation.item.input_audio_transcription.completed"){appendTranscript("Agent",event.transcript||"");}
       }catch(_){}
     });
 
@@ -684,6 +1010,11 @@ startBtn.onclick=async()=>{
 // END SESSION
 // ══════════════════════════════════════
 function endSession(){
+  const durationSecs = sessionStartTime ? Math.floor((Date.now()-sessionStartTime)/1000) : 0;
+  const mm = String(Math.floor(durationSecs/60)).padStart(2,"0");
+  const ss = String(durationSecs%60).padStart(2,"0");
+  const durationDisplay = `${mm}:${ss}`;
+
   stopSessionTimer();
   if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
   if(pc){pc.close();pc=null;}
@@ -694,10 +1025,32 @@ function endSession(){
   statusEl.textContent="Session ended — feedback below ↓";
   setFlowStep("call","done");
   document.getElementById("jarvisWrap").style.display="none";
+  document.getElementById("sessionBtns").style.display="none";
   document.getElementById("welcomePanel").style.display="block";
+  document.getElementById("startBtn").disabled=false;
+
+  // Log session to server
+  const totalTokens = tok.audioIn+tok.audioOut+tok.textIn+tok.textOut;
+  fetch("/log-session",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      name:            feedbackData.name || userName || "Unknown",
+      email:           userEmail,
+      scenario:        feedbackData.scenario || "—",
+      language:        [...detectedLanguages].join(", ") || "—",
+      durationSeconds: durationSecs,
+      durationDisplay: durationDisplay,
+      successful:      callSuccessful,
+      tokens:          { ...tok },
+      costINR:         parseFloat(calcCostINR().toFixed(3)),
+      feedback:        feedbackData.rating ? feedbackData : null
+    })
+  }).catch(()=>{});
+
   sendFeedbackEmail();
 }
-endBtn.onclick=endSession;
+document.getElementById("endBtn").onclick = endSession;
 
 </script>
 </body>
